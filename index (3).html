@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta name="description" content="A moments-first companion for the hard minutes of parenting. One tiny move at a time.">
+<meta name="theme-color" content="#ff8a6b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Dira">
+
+<title>Dira Parent, A moments first companion</title>
+<style>
+  :root{
+    --ink:#2b2a3d; --ink-soft:#5f5c74; --paper:#fbf6ee; --cloud:#ffffff;
+    --now-1:#ff8a6b; --now-2:#ffb08a; --now-wash:#fff0e9;
+    --later-1:#5b8f83; --later-2:#8fbcae; --later-wash:#e9f2ee;
+    --lav:#8f7fd6; --lav-wash:#f0ecfb; --gold:#f2c14e;
+    --line:rgba(43,42,61,.10); --shadow:0 18px 50px -22px rgba(43,42,61,.45); --radius:26px;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Georgia",serif;
+    --sans:"Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:var(--sans);color:var(--ink);
+    background:radial-gradient(1200px 600px at 12% -5%, #fdeee2 0%, transparent 55%),radial-gradient(900px 500px at 100% 5%, #eaf1ee 0%, transparent 50%),var(--paper);
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:34px 18px 90px;-webkit-font-smoothing:antialiased;
+  }
+  .stage{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;max-width:430px;}
+  .wordmark{text-align:center;line-height:1.15;}
+  .wordmark h1{font-family:var(--serif);font-weight:600;font-size:26px;letter-spacing:.2px;}
+  .wordmark h1 span{color:var(--now-1);}
+  .wordmark p{font-size:12.5px;color:var(--ink-soft);margin-top:3px;letter-spacing:.3px;}
+
+  .phone{position:relative;width:390px;max-width:100%;height:788px;background:#111018;border-radius:52px;padding:13px;box-shadow:var(--shadow), 0 0 0 2px rgba(0,0,0,.35);}
+  .phone::before{content:"";position:absolute;top:20px;left:50%;transform:translateX(-50%);width:118px;height:26px;border-radius:16px;background:#111018;z-index:40;}
+  .screen{position:relative;width:100%;height:100%;background:var(--paper);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;}
+  .statusbar{height:44px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 6px;font-size:13px;font-weight:600;color:var(--ink);}
+  .statusbar .dots{display:flex;gap:5px;align-items:center;}
+  .statusbar .dots span{width:4px;height:4px;border-radius:50%;background:var(--ink);opacity:.55;}
+  .statusbar .batt{width:22px;height:11px;border:1.5px solid var(--ink);border-radius:3px;position:relative;opacity:.7;}
+  .statusbar .batt::after{content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:var(--ink);border-radius:2px;}
+  .viewport{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .viewport::-webkit-scrollbar{display:none;}
+  .view{display:none;min-height:100%;padding:6px 22px 26px;animation:rise .42s cubic-bezier(.2,.8,.2,1);}
+  .view.active{display:block;}
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .topbar{display:flex;align-items:center;gap:10px;min-height:34px;margin-bottom:14px;}
+  .back{border:none;background:var(--cloud);color:var(--ink);width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;box-shadow:0 6px 16px -8px rgba(43,42,61,.5);display:flex;align-items:center;justify-content:center;flex:none;transition:transform .15s ease;}
+  .back:active{transform:scale(.9);}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink-soft);}
+
+  .home-hero{padding:22px 2px 6px;}
+  .home-hi{font-size:13px;color:var(--ink-soft);letter-spacing:.3px;}
+  .home-hero h2{font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.2;margin-top:6px;}
+
+  .checkin{background:var(--cloud);border:1px solid var(--line);border-radius:22px;padding:18px 18px 16px;margin:16px 0 18px;box-shadow:0 12px 30px -22px rgba(43,42,61,.5);}
+  .checkin .ck-q{font-size:13.5px;color:var(--ink-soft);margin-bottom:12px;}
+  .checkin .ck-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .ck-btn{border:1.5px solid var(--line);background:var(--paper);border-radius:14px;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all .15s ease;}
+  .ck-btn .ck-dot{width:14px;height:14px;border-radius:50%;}
+  .ck-btn .ck-label{font-size:10px;font-weight:700;color:var(--ink-soft);text-align:center;line-height:1.2;}
+  .ck-btn.easy .ck-dot{background:var(--later-1);}
+  .ck-btn.normal .ck-dot{background:var(--paper);border:1.5px solid #c9c6bb;}
+  .ck-btn.hard .ck-dot{background:var(--gold);}
+  .ck-btn.rough .ck-dot{background:var(--now-1);}
+  .ck-btn.selected{border-color:currentColor;background:var(--cloud);box-shadow:0 6px 16px -10px rgba(43,42,61,.4);}
+  .ck-btn.selected .ck-label{color:var(--ink);}
+  .ck-btn:active{transform:scale(.95);}
+  .ck-done{font-size:12.5px;color:var(--later-1);font-weight:600;margin-top:12px;text-align:center;}
+  .ck-tags{display:none;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+  .ck-tags.show{display:flex;}
+  .ck-tags .ck-tag-hint{width:100%;font-size:11.5px;color:var(--ink-soft);margin-bottom:2px;}
+  .ck-chip{border:1px solid var(--line);background:var(--paper);border-radius:14px;padding:6px 11px;font-size:11.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;}
+  .ck-chip.on{background:var(--now-1);border-color:var(--now-1);color:#fff;}
+  .ck-chip.maxed{opacity:.4;}
+
+  .cos-card{background:linear-gradient(135deg,var(--lav-wash),#faf7ff);border:1px solid rgba(143,127,214,.25);border-radius:20px;padding:18px;margin-bottom:16px;}
+  .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8f7fd6;margin-bottom:8px;}
+  .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--lav),#b9a6f0);flex:none;}
+  .cos-card p{font-size:14.5px;line-height:1.55;color:var(--ink);margin-bottom:0;}
+  .cos-inline-link{color:#5f4bb3;font-weight:700;text-decoration:underline;cursor:pointer;}
+
+  .tally-card{background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:16px 18px;margin-bottom:16px;}
+  .tally-card .tc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .tally-card .tc-title{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .tally-card .tc-more{font-size:11.5px;font-weight:700;color:var(--now-1);cursor:pointer;}
+  .tally-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);cursor:pointer;}
+  .tally-row:first-of-type{border-top:none;}
+  .tally-row .tr-emoji{font-size:16px;flex:none;}
+  .tally-row .tr-label{flex:1;font-size:13.5px;font-weight:600;color:var(--ink);}
+  .tally-row .tr-count{font-size:12.5px;font-weight:700;color:var(--ink-soft);background:var(--later-wash);padding:3px 9px;border-radius:10px;}
+  .tally-empty{font-size:13px;color:var(--ink-soft);padding:6px 0;}
+
+  .choice{display:block;width:100%;text-align:left;cursor:pointer;border:none;border-radius:var(--radius);padding:22px 22px;margin-bottom:16px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow);transition:transform .18s cubic-bezier(.2,.8,.2,1);}
+  .choice:active{transform:scale(.97);}
+  .choice .ic{font-size:28px;display:block;margin-bottom:10px;}
+  .choice h3{font-family:var(--serif);font-weight:600;font-size:20px;margin-bottom:5px;}
+  .choice p{font-size:13px;line-height:1.4;opacity:.95;}
+  .choice.now{background:linear-gradient(135deg,var(--now-1),var(--now-2));}
+  .choice.later{background:linear-gradient(135deg,var(--later-1),var(--later-2));}
+  .choice::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.14);right:-40px;top:-50px;}
+  .home-foot{text-align:center;font-size:11.5px;color:var(--ink-soft);margin-top:6px;line-height:1.5;padding:0 10px;}
+
+  .sos-link{display:flex;align-items:center;gap:8px;justify-content:center;text-align:center;font-size:13.5px;font-weight:700;color:#a3293a;text-decoration:underline;cursor:pointer;margin:14px 0 4px;padding:6px;}
+  .sos-ic{font-size:15px;background:#a3293a;color:#fff;font-weight:800;letter-spacing:.02em;padding:1px 5px;border-radius:5px;font-size:9px;line-height:1.5;}
+  .crisis-lede{font-size:14px;line-height:1.55;color:var(--ink-soft);margin-bottom:18px;}
+  .crisis-card{display:flex;gap:14px;align-items:flex-start;background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 10px 26px -20px rgba(43,42,61,.5);}
+  .crisis-ic{width:44px;height:44px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;font-size:21px;background:#f8dfe0;}
+  .crisis-card .cc-t b{font-size:15px;display:block;font-weight:600;color:var(--ink);margin-bottom:3px;}
+  .crisis-card .cc-t .cc-num{font-family:var(--serif);font-size:17px;font-weight:600;color:#a3293a;display:block;margin-bottom:4px;}
+  .crisis-card .cc-t small{font-size:12.5px;color:var(--ink-soft);line-height:1.4;}
+  .crisis-disclaimer{border:1px dashed rgba(163,41,58,.35);background:#fdf4f4;border-radius:18px;padding:16px 18px;margin-top:6px;font-size:12.5px;color:var(--ink-soft);line-height:1.55;}
+  .crisis-disclaimer b{color:var(--ink);}
+
+  .h-title{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.22;margin-bottom:6px;}
+  .h-sub{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:16px;}
+  .tile{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 10px 26px -20px rgba(43,42,61,.6);transition:transform .16s ease,border-color .16s ease;}
+  .tile:active{transform:scale(.98);}
+  .tile:hover{border-color:rgba(255,138,107,.5);}
+  .tile .emoji{width:46px;height:46px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;font-size:23px;background:var(--now-wash);}
+  .tile .tx{flex:1;}
+  .tile .tx b{font-size:15.5px;display:block;font-weight:600;}
+  .tile .tx small{font-size:12.5px;color:var(--ink-soft);display:block;margin-top:2px;line-height:1.35;}
+  .tile .chev{color:var(--ink-soft);font-size:18px;flex:none;}
+
+  .steplabel{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:12px;}
+  .steplabel.you{background:var(--now-wash);color:#c8542f;}
+  .steplabel.child{background:var(--lav-wash);color:#5f4bb3;}
+  .card{background:var(--cloud);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;margin-bottom:16px;box-shadow:0 12px 30px -22px rgba(43,42,61,.6);}
+  .card .norm{font-size:14.5px;line-height:1.5;color:var(--ink);margin-bottom:16px;}
+  .microstep{display:flex;gap:12px;align-items:flex-start;margin-bottom:13px;}
+  .microstep .n{width:26px;height:26px;border-radius:50%;flex:none;background:linear-gradient(135deg,var(--now-1),var(--now-2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:1px;}
+  .microstep p{font-size:14px;line-height:1.45;}
+  .script{background:var(--now-wash);border-left:3px solid var(--now-1);border-radius:0 14px 14px 0;padding:14px 16px;margin:6px 0 4px;}
+  .script .k{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#c8542f;margin-bottom:6px;}
+  .script p{font-family:var(--serif);font-size:16px;line-height:1.45;font-style:italic;color:var(--ink);}
+  .whisper{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-top:20px;padding-top:16px;border-top:1px dashed var(--line);opacity:.92;}
+  .whisper b{color:var(--ink);}
+  .parents-note{display:flex;align-items:flex-start;gap:7px;font-size:11.5px;color:var(--ink-soft);font-weight:500;margin:20px 0 0;line-height:1.4;}
+  .parents-note em{font-style:italic;}
+  .parents-note .pn-i{width:15px;height:15px;border-radius:50%;background:var(--lav);color:#fff;font-size:9.5px;font-style:italic;display:flex;align-items:center;justify-content:center;flex:none;font-family:var(--serif);margin-top:1px;opacity:.8;}
+
+  .cue-exp{border-radius:18px;margin:14px 0;overflow:hidden;background:linear-gradient(135deg,var(--lav-wash),#faf7ff);border:1px solid rgba(143,127,214,.16);}
+  .cue-exp.warm{background:linear-gradient(135deg,#fff6ef,#fff);border-color:rgba(255,138,107,.2);}
+  .cue-exp > summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px 16px;}
+  .cue-exp > summary::-webkit-details-marker{display:none;}
+  .cue-exp .cue-ic{width:38px;height:38px;border-radius:50%;flex:none;color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--now-1),var(--now-2));}
+  .cue-exp .cue-name{font-family:var(--serif);font-size:17px;font-weight:600;color:#c8542f;flex:1;}
+  .cue-exp .exp-chev{color:var(--now-1);font-size:15px;transition:transform .25s ease;flex:none;}
+  .cue-exp[open] .exp-chev{transform:rotate(90deg);}
+  .cue-exp .cue-do{margin:0 16px 14px;background:#fff;border:1px solid rgba(255,138,107,.14);border-radius:13px;padding:14px 16px;font-size:15px;line-height:1.5;color:var(--ink);font-family:var(--serif);font-style:italic;}
+  .cue-mini{display:flex;gap:7px;align-items:flex-start;font-size:12px;line-height:1.4;color:var(--ink-soft);padding:0 18px 16px;margin:0;opacity:.85;}
+  .cue-mini b{color:var(--ink-soft);font-weight:600;}
+  .cue-mini .mini-ic{flex:none;opacity:.7;}
+
+  .jsection{margin-bottom:22px;}
+  .jsection .kicker{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .jsection .kicker .badge{width:28px;height:28px;border-radius:9px;flex:none;background:var(--later-wash);display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .jsection .kicker h4{font-family:var(--serif);font-size:18px;font-weight:600;}
+  .jsection p.body{font-size:14px;line-height:1.55;color:var(--ink);}
+  .jsection p.body + p.body{margin-top:10px;}
+  .practice{background:var(--later-wash);border-radius:18px;padding:16px 18px;margin-top:4px;}
+  .practice .tag{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#3d6b5f;margin-bottom:8px;}
+  .practice h5{font-family:var(--serif);font-size:16px;margin-bottom:8px;}
+  .practice ol{margin:0 0 0 18px;}
+  .practice ol li{font-size:13.5px;line-height:1.5;margin-bottom:6px;}
+  .qbubble{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 15px;margin-bottom:9px;font-family:var(--serif);font-style:italic;font-size:14.5px;line-height:1.4;color:var(--ink);}
+  .qbubble::before{content:"\201C";color:var(--later-1);font-size:18px;font-weight:700;font-style:normal;margin-right:2px;}
+  .space-tip{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;}
+  .space-tip .st{width:30px;height:30px;border-radius:9px;background:var(--later-wash);flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .space-tip p{font-size:13.5px;line-height:1.45;}
+  .space-tip p b{font-weight:600;}
+  .res{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:11px;transition:transform .15s ease;text-decoration:none;color:inherit;}
+  .res:active{transform:scale(.98);}
+  .res .rt{width:40px;height:40px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--gold);}
+  .res.article .rt{background:#f0e6cf;}
+  .res .rx b{font-size:14px;font-weight:600;display:block;line-height:1.25;}
+  .res .rx small{font-size:12px;color:var(--ink-soft);display:block;margin-top:4px;line-height:1.4;}
+  .res .rx .meta{font-size:10.5px;color:var(--later-1);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:6px;}
+  .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .pill{font-size:12px;font-weight:600;padding:7px 14px;border-radius:20px;background:#fff;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;}
+  .pill.on{background:var(--later-1);color:#fff;border-color:var(--later-1);}
+  .softnote{background:#fff;border:1px dashed var(--line);border-radius:16px;padding:14px 16px;font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-top:10px;}
+  .softnote b{color:var(--ink);}
+  .hint{text-align:center;font-size:11.5px;color:var(--ink-soft);margin-top:10px;letter-spacing:.2px;}
+
+  .tabbar{flex:none;height:70px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;padding-bottom:6px;}
+  .tabbar button{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:600;color:var(--ink-soft);flex:1;}
+  .tabbar button .ti{font-size:19px;line-height:1;}
+  .tabbar button.active{color:var(--now-1);}
+
+  .tier-status{flex:none;display:flex;align-items:center;justify-content:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;padding:7px 14px;text-align:center;line-height:1.3;}
+  body.tier-free .tier-status{background:var(--later-wash);color:#3d6b5f;}
+  body.tier-paid .tier-status{background:linear-gradient(135deg,#fff4dd,#fdead0);color:#8a6a1a;}
+  .tier-status .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex:none;}
+  .tier-switch-wrap{flex:none;display:flex;justify-content:center;padding:10px 0 12px;background:rgba(255,255,255,.92);}
+  .tier-switch{display:inline-flex;align-items:center;gap:2px;background:#2b2a3d;border-radius:22px;padding:4px;box-shadow:0 6px 16px -8px rgba(0,0,0,.5);}
+  .tier-switch .demo-tag{font-size:10px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.5);padding:0 10px 0 8px;}
+  .tier-switch button{border:none;cursor:pointer;font-size:12px;font-weight:800;letter-spacing:.3px;padding:7px 18px;border-radius:18px;background:transparent;color:rgba(255,255,255,.6);transition:all .16s ease;}
+  .tier-switch button.on{color:#2b2a3d;background:#fff;}
+  .tier-switch button.paid-b.on{background:var(--gold);color:#4a3a12;}
+
+  .locked-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold),#e8a838);color:#4a3a12;padding:4px 9px;border-radius:20px;margin-left:auto;}
+  body.tier-free .paidblock .paid-inner{position:relative;filter:blur(3.5px);opacity:.55;pointer-events:none;user-select:none;}
+  body.tier-free .paidblock{position:relative;cursor:pointer;border:1px dashed rgba(232,168,56,.5);border-radius:18px;padding:12px 12px 14px;background:rgba(242,193,78,.05);}
+  body.tier-free .paidblock::after{content:"Tap to unlock with Dira Plus";position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:12px;font-weight:800;color:#8a6a1a;letter-spacing:.2px;}
+  .paidblock{cursor:default;}
+  body.tier-paid .locked-badge{background:var(--later-wash);color:#3d6b5f;}
+  body.tier-paid .locked-badge .lk{display:none;}
+
+  .sheet-scrim{position:absolute;inset:0;z-index:50;background:rgba(43,42,61,.42);backdrop-filter:blur(2px);display:none;align-items:flex-end;border-radius:40px;overflow:hidden;}
+  .sheet-scrim.open{display:flex;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;}to{opacity:1;}}
+  .sheet{width:100%;background:var(--cloud);border-radius:28px 28px 0 0;padding:10px 24px 30px;box-shadow:0 -20px 50px -20px rgba(43,42,61,.5);animation:sheetup .32s cubic-bezier(.2,.85,.2,1);}
+  @keyframes sheetup{from{transform:translateY(100%);}to{transform:translateY(0);}}
+  .sheet .grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 16px;}
+  .sheet .crest{width:56px;height:56px;border-radius:18px;margin:0 auto 14px;background:linear-gradient(135deg,var(--gold),#e8a838);display:flex;align-items:center;justify-content:center;font-size:28px;}
+  .sheet h3{font-family:var(--serif);font-size:22px;text-align:center;margin-bottom:6px;}
+  .sheet .sub{font-size:13.5px;color:var(--ink-soft);text-align:center;line-height:1.5;margin-bottom:18px;}
+  .sheet .feat{display:flex;gap:11px;align-items:flex-start;margin-bottom:12px;}
+  .sheet .feat .fi{color:var(--later-1);font-size:16px;flex:none;margin-top:1px;}
+  .sheet .feat p{font-size:13.5px;line-height:1.4;}
+  .sheet .feat p b{font-weight:600;}
+  .sheet .cta{display:block;width:100%;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold),#e8a838);color:#4a3a12;font-size:15px;font-weight:800;padding:16px;border-radius:16px;margin-top:6px;box-shadow:0 12px 26px -12px rgba(232,168,56,.7);}
+  .sheet .cta small{display:block;font-weight:600;font-size:11.5px;opacity:.75;margin-top:2px;}
+  .sheet .dismiss{display:block;width:100%;background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:13px;font-weight:600;padding:14px 0 2px;}
+  .free-flag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;background:var(--later-wash);color:#3d6b5f;padding:4px 9px;border-radius:20px;margin-left:auto;}
+
+  .month-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .month-nav{border:none;background:var(--cloud);width:34px;height:34px;border-radius:50%;box-shadow:0 6px 14px -8px rgba(43,42,61,.4);cursor:pointer;font-size:15px;color:var(--ink);}
+  .month-nav:disabled{opacity:.3;cursor:default;}
+  .month-title{font-family:var(--serif);font-size:19px;font-weight:600;}
+  .week-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .wl-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--ink-soft);}
+  .wl-dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .wl-dot.easy{background:var(--later-1);}
+  .wl-dot.normal{background:var(--paper);border:1.5px solid #c9c6bb;}
+  .wl-dot.hard{background:var(--gold);}
+  .wl-dot.rough{background:var(--now-1);}
+  .wl-dot.inferred{border:1.5px solid var(--now-1);}
+  .month-grid-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 12px;margin-bottom:16px;}
+  .month-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+  .month-dow span{text-align:center;font-size:10px;color:var(--ink-soft);}
+  .month-row{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+  .month-row:last-child{margin-bottom:0;}
+  .md-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;}
+  .wd{width:78%;height:78%;border-radius:50%;background:#e9e6dc;cursor:pointer;}
+  .wd.empty-cell{visibility:hidden;}
+  .wd.easy{background:var(--later-1);}
+  .wd.normal{background:var(--paper);border:1.5px solid #c9c6bb;}
+  .wd.hard{background:var(--gold);}
+  .wd.rough{background:var(--now-1);}
+  .wd.inferred{background:transparent;border:1.5px solid;}
+  .md-cell.today .wd{box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--ink);}
+  .month-cta-row{display:flex;gap:10px;margin-bottom:8px;}
+  .month-btn{flex:1;text-align:center;font-size:12.5px;font-weight:700;padding:11px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;}
+  .month-cold{text-align:center;padding:30px 10px;}
+  .month-cold .wc-ic{font-size:32px;margin-bottom:10px;}
+  .month-cold p{font-size:13.5px;color:var(--ink-soft);line-height:1.5;}
+  .retention-note{font-size:11.5px;color:var(--ink-soft);line-height:1.5;text-align:center;margin-top:8px;padding:0 4px;}
+
+  .install-banner{position:absolute;left:14px;right:14px;bottom:134px;z-index:45;display:none;align-items:center;gap:12px;background:var(--cloud);border:1px solid var(--line);border-radius:18px;padding:12px 14px;box-shadow:0 16px 38px -16px rgba(43,42,61,.55);animation:rise .4s cubic-bezier(.2,.8,.2,1);}
+  .install-banner.show{display:flex;}
+  .install-banner .ib-ic{width:40px;height:40px;border-radius:12px;flex:none;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--now-1),var(--now-2));}
+  .install-banner .ib-tx{flex:1;min-width:0;}
+  .install-banner .ib-tx b{font-size:13.5px;display:block;font-weight:600;}
+  .install-banner .ib-tx small{font-size:11.5px;color:var(--ink-soft);}
+  .install-banner .ib-go{border:none;cursor:pointer;font-weight:700;font-size:12.5px;color:#fff;flex:none;background:linear-gradient(135deg,var(--now-1),var(--now-2));padding:9px 15px;border-radius:12px;}
+  .install-banner .ib-x{border:none;background:none;cursor:pointer;color:var(--ink-soft);font-size:19px;line-height:1;padding:2px;flex:none;}
+  .ios-hint{position:absolute;left:14px;right:14px;bottom:134px;z-index:46;display:none;background:var(--ink);color:#fff;border-radius:16px;padding:14px 16px;font-size:13px;line-height:1.55;cursor:pointer;box-shadow:0 16px 38px -14px rgba(0,0,0,.5);animation:rise .4s cubic-bezier(.2,.8,.2,1);}
+  .ios-hint.show{display:block;}
+  .ios-hint b{color:#fff;}
+
+  @media (display-mode: standalone), (display-mode: minimal-ui), (max-width: 520px){
+    body{padding:0;align-items:stretch;justify-content:stretch;min-height:100dvh;}
+    .stage{max-width:none;gap:0;width:100%;}
+    .wordmark,.stage > .hint{display:none;}
+    .phone{width:100%;max-width:none;height:100dvh;border-radius:0;padding:0;background:var(--paper);box-shadow:none;}
+    .phone::before{display:none;}
+    .screen{border-radius:0;height:100dvh;}
+    .statusbar{display:none;}
+    .tier-status{padding-top:calc(7px + env(safe-area-inset-top));}
+    .tier-switch-wrap{padding-bottom:calc(12px + env(safe-area-inset-bottom));}
+    .sheet-scrim{border-radius:0;}
+    .sheet{padding-bottom:calc(30px + env(safe-area-inset-bottom));}
+    .install-banner,.ios-hint{bottom:calc(150px + env(safe-area-inset-bottom));}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</head>
+<body class="tier-free">
+  <div class="stage">
+    <div class="wordmark">
+      <h1>Dira <span>Parent</span></h1>
+      <p>A moments-first companion for the hard minutes</p>
+    </div>
+
+    <div class="phone">
+      <div class="screen">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="dots"><span></span><span></span><span></span>&nbsp;<span class="batt"></span></span>
+        </div>
+
+        <div class="tier-status" id="tierStatus">
+          <span class="dot"></span><span id="tierStatusText">Free · Situations + Library · Deeper journeys locked</span>
+        </div>
+
+        <div class="viewport" id="viewport">
+
+          <!-- ============ HOME ============ -->
+          <section class="view active" id="home">
+            <div class="home-hero">
+              <div class="home-hi">Hi. You're here &mdash; that already counts.</div>
+              <h2>How's today going?</h2>
+            </div>
+
+            <div class="checkin" id="checkin">
+              <div class="ck-q">One tap. No follow-up questions unless you want them.</div>
+              <div class="ck-row">
+                <button class="ck-btn easy" data-tier="easy" onclick="tapCheckin('easy')"><span class="ck-dot"></span><span class="ck-label">Easy day</span></button>
+                <button class="ck-btn normal" data-tier="normal" onclick="tapCheckin('normal')"><span class="ck-dot"></span><span class="ck-label">Normal</span></button>
+                <button class="ck-btn hard" data-tier="hard" onclick="tapCheckin('hard')"><span class="ck-dot"></span><span class="ck-label">Hard moment</span></button>
+                <button class="ck-btn rough" data-tier="rough" onclick="tapCheckin('rough')"><span class="ck-dot"></span><span class="ck-label">Rough day</span></button>
+              </div>
+              <div class="ck-tags" id="ckTags"></div>
+              <div class="ck-done" id="ckDone" style="display:none;"></div>
+            </div>
+
+            <div id="cosSlot"></div>
+            <div id="tallySlot"></div>
+
+            <p class="home-foot">No feeds. No lessons. No jargon.<br>One tiny move at a time &mdash; enough to make it 10% easier.</p>
+            <div class="sos-link" onclick="go('crisis')"><span class="sos-ic">SOS</span>In crisis or worried about safety? Get help now</div>
+          </section>
+
+          <!-- ============ SITUATIONS: picker ============ -->
+          <section class="view" id="situations-list">
+            <div class="topbar"><button class="back" onclick="go('home')">&larr;</button><span class="eyebrow">Situations</span></div>
+            <h3 class="h-title">What's going on?</h3>
+            <p class="h-sub">Tap whatever feels closest, then choose a quick script for right now, or the fuller picture for when you're calmer.</p>
+            <div id="situationsTiles"></div>
+            <p class="hint">Every situation has its own fully written path.</p>
+          </section>
+
+          <!-- ============ SITUATION PAGES (generated) ============ -->
+          <div id="situationPages"></div>
+
+          <!-- ============ YOUR MONTH ============ -->
+          <section class="view" id="month">
+            <div class="topbar"><button class="back" onclick="go('home')">&larr;</button><span class="eyebrow">Your month</span></div>
+            <div id="monthContent"></div>
+          </section>
+
+          <!-- ============ GET HELP NOW ============ -->
+          <section class="view" id="crisis">
+            <div class="topbar"><button class="back" onclick="go('home')">&larr;</button><span class="eyebrow">Get help now</span></div>
+            <h3 class="h-title">You don't have to handle this alone</h3>
+            <p class="crisis-lede">If you or your child is in danger, or you're having thoughts of hurting yourself or your child, please reach out right now. These lines are free, confidential, and open 24/7.</p>
+
+            <div class="crisis-card">
+              <span class="crisis-ic">&#128657;</span>
+              <span class="cc-t"><b>Immediate danger</b><span class="cc-num">Call 911</span><small>If someone is at risk of being hurt right now.</small></span>
+            </div>
+            <div class="crisis-card">
+              <span class="crisis-ic">&#128172;</span>
+              <span class="cc-t"><b>988 Suicide &amp; Crisis Lifeline</b><span class="cc-num">Call or text 988</span><small>For you &ndash; overwhelmed, hopeless, or scared of what you might do.</small></span>
+            </div>
+            <div class="crisis-card">
+              <span class="crisis-ic">&#129528;</span>
+              <span class="cc-t"><b>Childhelp National Child Abuse Hotline</b><span class="cc-num">1-800-422-4453</span><small>Support and guidance, any time, no judgment.</small></span>
+            </div>
+            <div class="crisis-card">
+              <span class="crisis-ic">&#9993;&#65039;</span>
+              <span class="cc-t"><b>Crisis Text Line</b><span class="cc-num">Text HOME to 741741</span><small>If talking out loud feels like too much right now.</small></span>
+            </div>
+
+            <div class="crisis-disclaimer"><b>Dira Parent is not a substitute for professional or medical care.</b> The moves here are gentle, everyday support &mdash; not therapy, diagnosis, or emergency help. If you're worried about your child's safety or your own, trust that instinct and reach out above.</div>
+          </section>
+
+          <!-- ============ LIBRARY ============ -->
+          <section class="view" id="library">
+            <div class="topbar"><button class="back" onclick="go('home')">&larr;</button><span class="eyebrow">SEL Resource Hub</span></div>
+            <h3 class="h-title">A shelf worth keeping</h3>
+            <p class="h-sub">Every resource in the Dira library, re-framed for parents. 8 shared.</p>
+            <div class="pill-row">
+              <span class="pill on" onclick="filterRes(this,'all')">All</span>
+              <span class="pill" onclick="filterRes(this,'book')">Books</span>
+              <span class="pill" onclick="filterRes(this,'article')">Articles</span>
+            </div>
+            <div id="reslist">
+              <a class="res article" data-t="article" href="https://open.substack.com/pub/kidtalk/p/good-job-is-boring-and-unspecific" target="_blank" rel="noopener"><span class="rt">&#128196;</span><span class="rx"><b>100 Ways to Praise Your Kids</b><small>Praise with substance beats auto-pilot "good job."</small><span class="meta">Article &middot; Marie</span></span></a>
+              <a class="res article" data-t="article" href="https://open.substack.com/pub/kidtalk/p/jeopardy-ice-and-the-promise-of-a" target="_blank" rel="noopener"><span class="rt">&#128196;</span><span class="rx"><b>A Story I Can't Stop Telling About Justice</b><small>A small classroom moment that keeps teaching.</small><span class="meta">Article &middot; Marie</span></span></a>
+              <a class="res article" data-t="article" href="https://open.substack.com/pub/kidtalk/p/365-questions-to-ask-your-kids-in" target="_blank" rel="noopener"><span class="rt">&#128196;</span><span class="rx"><b>365 Questions to Ask Your Kids in 2026</b><small>One well-timed question can open a door.</small><span class="meta">Article &middot; Marie</span></span></a>
+              <a class="res" data-t="book" href="https://amzn.to/3MSJR0O" target="_blank" rel="noopener"><span class="rt">&#128218;</span><span class="rx"><b>Flora's Wish</b><small>Endings can exist alongside new beginnings.</small><span class="meta">Book &middot; Fiona Halliday</span></span></a>
+              <a class="res" data-t="book" href="https://amzn.to/4kRv9Uo" target="_blank" rel="noopener"><span class="rt">&#128218;</span><span class="rx"><b>The Bear and the Wildcat</b><small>Healing begins with being seen, not fixed.</small><span class="meta">Book &middot; Kazumi Yumoto</span></span></a>
+              <a class="res" data-t="book" href="https://amzn.to/3Mrk2ox" target="_blank" rel="noopener"><span class="rt">&#128218;</span><span class="rx"><b>Grief Is an Elephant</b><small>Grief feels enormous, then shifts over time.</small><span class="meta">Book &middot; Tamara Ellis Smith</span></span></a>
+              <a class="res" data-t="book" href="https://amzn.to/46l0h8Q" target="_blank" rel="noopener"><span class="rt">&#128218;</span><span class="rx"><b>The Remembering Stone</b><small>Memory can live inside everyday objects.</small><span class="meta">Book &middot; Carey Sookocheff</span></span></a>
+              <a class="res" data-t="book" href="https://www.amazon.com/Walk-Woods-Nikki-Grimes/dp/0823449653" target="_blank" rel="noopener"><span class="rt">&#128218;</span><span class="rx"><b>A Walk in the Woods</b><small>Memory and shared places keep connection alive.</small><span class="meta">Book &middot; Nikki Grimes</span></span></a>
+            </div>
+          </section>
+
+        </div>
+
+        <nav class="tabbar" id="tabbar">
+          <button class="active" data-tab="home" onclick="go('home')"><span class="ti">&#127968;</span>Home</button>
+          <button data-tab="situations" onclick="go('situations-list')"><span class="ti">&#127796;</span>Situations</button>
+          <button data-tab="month" onclick="go('month')"><span class="ti">&#128197;</span>Your month</button>
+          <button data-tab="library" onclick="go('library')"><span class="ti">&#128218;</span>Library</button>
+        </nav>
+
+        <div class="install-banner" id="installBanner">
+          <span class="ib-ic">&#127754;</span>
+          <span class="ib-tx"><b>Install Dira</b><small>Keep it one tap away &mdash; works offline</small></span>
+          <button class="ib-go" id="installGo">Install</button>
+          <button class="ib-x" id="installX" aria-label="Dismiss">&times;</button>
+        </div>
+        <div class="ios-hint" id="iosHint">To install on iPhone: tap the <b>Share</b> button in Safari, then choose <b>Add to Home Screen</b>. <span style="opacity:.65">(Tap to close)</span></div>
+
+        <div class="tier-switch-wrap">
+          <div class="tier-switch" role="group" aria-label="Demo tier">
+            <span class="demo-tag">DEMO</span>
+            <button class="free-b on" onclick="setTier('free')">Free</button>
+            <button class="paid-b" onclick="setTier('paid')">Plus</button>
+          </div>
+        </div>
+
+        <div class="sheet-scrim" id="upsell" onclick="if(event.target===this)closeUpsell()">
+          <div class="sheet">
+            <div class="grab"></div>
+            <div class="crest">&#128274;</div>
+            <h3>Unlock the full journey</h3>
+            <p class="sub">The <b>why</b> is always free. Dira Plus opens the part that actually changes the week.</p>
+            <div class="feat"><span class="fi">&#127793;</span><p><b>This week's tiny practice</b> &mdash; the small routine that makes the pattern easier.</p></div>
+            <div class="feat"><span class="fi">&#128172;</span><p><b>Talk-about-it questions</b> to explore together, calmly.</p></div>
+            <div class="feat"><span class="fi">&#127994;</span><p><b>Try-this-in-your-space</b> setups for calm corners and reminders.</p></div>
+            <div class="feat"><span class="fi">&#128424;</span><p><b>Printable cards &amp; downloads</b> you can save or hang up.</p></div>
+            <button class="cta" onclick="setTier('paid');closeUpsell()">Start Dira Plus<small>Preview the paid experience in this demo</small></button>
+            <button class="dismiss" onclick="closeUpsell()">Not now</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="hint">Clickable prototype &mdash; tap a situation, try the check-in, browse Your Month.</p>
+  </div>
+
+<script>
+/* ================= SITUATION DATA ================= */
+const SITUATIONS = [
+  {id:'meltdown', short:'Meltdown', emoji:'&#127755;', title:'My child is melting down', sub:'Crying, yelling, "out of control"', eyebrow:'Meltdown',
+    step1:{text:"Your body wants to spike right along with theirs. That's normal. We start with you &mdash; it only takes a few seconds.",
+      micro:['Press your feet into the floor and feel it hold your weight.','Drop your shoulders down and away from your ears.','Let your out-breath be slower than your in-breath, once.'],
+      script:'"Their big feelings are not an emergency. I can be the calm one."'},
+    step2:{cues:[{icon:'&#129309;',name:'Sit With the Storm',warm:true,line:'"Your feelings are really big right now. I\'m going to sit right here while they\'re big."',mini:'no words at all. Just sit close and let them see you\'re staying.'},
+      {icon:'&#128367;',name:'Calm Spot',warm:true,line:'"Your body\'s saying \'too much!\' Let\'s take those big feelings to our calm spot together."',mini:'just offer a hand or lead the way. Walking together counts.'}],
+      whisper:"<b>If it doesn't work right away &mdash;</b> that's okay, and expected. Stay nearby, voice low and slow. You don't have to stop the storm; you just have to not become a second one.",
+      note:'Naming and color games come <em>after</em> the storm, not during.'},
+    why:["Think of two parts of the brain: an <b>alarm</b> and a <b>coach</b>. During a meltdown, the alarm is blaring and the coach has gone offline. Your child isn't giving you a hard time &mdash; they're <i>having</i> a hard time, and their thinking brain literally can't reach them yet.",
+      "Meltdowns often land at home, after school, precisely because home is safe. They held it together all day; with you, the lid finally comes off. That's not a sign you're doing it wrong &mdash; it's a sign you're their safe place."],
+    practice:{title:'A predictable "landing" routine',steps:['Same three things, same order, right after school or daycare.','Something for the body first &mdash; a snack, water, a squeeze.','No questions about the day until <i>after</i> they\'ve landed.']},
+    talk:['When do you feel most like everything is just too much?','What does your body feel like right before a big feeling comes?','Where in our home would be a good "calm spot" for you?'],
+    space:[{icon:'&#129446;',text:'<b>Build a calm-down corner together.</b> Let your child choose what goes in it &mdash; a pillow, a soft toy, a favorite book.'},{icon:'&#128444;&#65039;',text:'<b>A simple visual reminder</b> of the after-school routine, at their eye level.'}],
+    reads:['q365','praise','flora','bear']},
+  {id:'shutdown', short:'Shut down', emoji:'&#128034;', title:'My child has shut down', sub:'Quiet, hiding, "I don\'t care"', eyebrow:'Shut down',
+    step1:{text:"A quiet child can pull hard on you &mdash; the urge is to chase, fix, or fill the silence. First, slow yourself down.",
+      micro:['Soften your face and your hands. Nothing to solve yet.','Lower your body &mdash; sit or crouch, so you\'re not looming.','Slow your own pace right down. Let the silence be okay.'],
+      script:'"Quiet isn\'t rejection. They\'re protecting themselves, not pushing me away."'},
+    step2:{cues:[{icon:'&#129786;',name:'Quiet Company',warm:false,line:'"You don\'t have to talk. I\'m just going to be right here with you."',mini:'sit nearby doing your own calm thing. Let them feel you there.'},
+      {icon:'&#128682;',name:'Open Door',warm:false,line:'"I\'ll be right over here whenever you\'re ready. No rush at all."',mini:'leave a snack or their comfort object nearby, then give room.'}],
+      whisper:"<b>If they stay quiet &mdash;</b> that's still working. Withdrawal is coping, not a wall. Stay near, keep your energy low, let them return on their own clock.",
+      note:'Pressing a withdrawn kid to talk usually makes them go smaller.'},
+    why:["When a meltdown is the alarm turned <i>up</i>, shutting down is the alarm turned <i>in</i>. Some nervous systems, when overwhelmed, don't explode &mdash; they go still and quiet to conserve and protect. It can look like \"I don't care,\" but underneath it's usually \"this is too much and I don't know what to do with it.\"",
+      "Withdrawal often gets read as defiance or rudeness. It's neither. It's a child managing a flood the only way their body knows how &mdash; by going small."],
+    practice:{title:'Sit near, without an agenda',steps:['When they go quiet, sit nearby doing your own calm thing.','Offer connection without demanding it &mdash; presence, not questions.','Let them re-enter on their own timing. Notice when they do.']},
+    talk:['When you go quiet, what would feel most helpful from me?','Is there a signal you could give me for "I need space"?','What helps you feel ready to come back?'],
+    space:[{icon:'&#128682;',text:'<b>A "cozy retreat" spot</b> they can go to that isn\'t a punishment &mdash; a nook, a tent, a beanbag they choose.'},{icon:'&#128994;',text:'<b>A simple "ready to talk" signal</b> &mdash; a card they flip, or a spot they come sit &mdash; so re-entry is theirs to control.'}],
+    reads:['bear','stone','q365']},
+  {id:'anxious', short:'Anxious', emoji:'&#129701;', title:'My child is anxious or clingy', sub:'Worries, can\'t let go, "What if&hellip;?"', eyebrow:'Anxious',
+    step1:{text:"Worry is contagious &mdash; if your voice speeds up, theirs will too. Your steadiness is the medicine here.",
+      micro:['Slow your own movements and voice down by half.','Drop your shoulders and soften your gaze.','Get to their level so your steadiness is close by.'],
+      script:'"I don\'t have to erase the worry. I just have to be the steady one they can borrow calm from."'},
+    step2:{cues:[{icon:'&#9875;&#65039;',name:'Hold It Together',warm:false,line:'"That worry feels really big right now. I\'ve got you &mdash; we can hold it together."',mini:'a firm, steady hug or hand on their back. Let them borrow your calm.'},
+      {icon:'&#127752;',name:'Where\'s the Worry?',warm:false,line:'"Show me where the worry is sitting in your body &mdash; is it in your tummy, or your chest?"',mini:'great as worry <em>rises</em> or fades &mdash; skip it at full panic.'}],
+      whisper:"<b>If the what-ifs keep coming &mdash;</b> you don't have to answer each one. Anxiety asks for reassurance on a loop. A warm, unhurried body beside theirs settles the nervous system faster than any perfect answer.",
+      note:'Naming the feeling is a calming-down tool, not a peak-panic tool.'},
+    why:["The worry brain is a smoke detector that's set a little too sensitive. Its job is to keep your child safe, so it scans for danger and shouts \"what if?\" &mdash; even when there's no fire. It isn't broken; it's just working overtime.",
+      "Trying to argue a worry away usually feeds it, because the brain hears \"this is worth debating.\" What settles it is a calm body nearby and permission for the feeling to exist without it being an emergency."],
+    practice:{title:'A morning "preview" ritual',steps:['30 seconds naming what today holds &mdash; predictability calms the smoke detector.','Flag one thing to look forward to.','End with the same steady phrase each day, like an anchor.']},
+    talk:['Where in your body do you feel the worry first?','If your worry was a character, what would it look like?','What helps the worry feel a little smaller?'],
+    space:[{icon:'&#128230;',text:'<b>A "worry box"</b> where worries can be written or drawn and set down &mdash; out of the head, into a safe place.'},{icon:'&#128197;',text:'<b>A visible daily rhythm</b> at their eye level, so the day feels known instead of uncertain.'}],
+    reads:['flora','q365','praise']},
+  {id:'limit', short:'Both at our limit', emoji:'&#128293;', title:'We\'re both at our limit', sub:'I feel like I might snap', eyebrow:'Both at our limit',
+    step1:{text:"This one is almost entirely about you. When you're close to snapping, the kindest thing you can do is buy yourself ten seconds.",
+      micro:['Name it silently: "I\'m flooded." That alone helps.','If it\'s safe, step back half a step &mdash; hand on the counter, cool water.','Unclench your jaw and hands before any words come out.'],
+      script:'"I don\'t have to win this moment. I just have to not make it worse."'},
+    step2:{cues:[{icon:'&#9208;&#65039;',name:'Honest Pause',warm:true,line:'"I\'m feeling really full up too. I need one quiet minute, then I\'m coming right back to you."',mini:'just say "One minute," step to arm\'s length, and mean the coming-back part.'},
+      {icon:'&#129657;',name:'Start Over',warm:true,line:'"That came out too big. I\'m sorry. Let\'s both take a breath and start over."',mini:'"I\'m sorry. Do-over?" Repair doesn\'t need a speech.'}],
+      whisper:"<b>If you lost it &mdash;</b> repair is the whole skill, more powerful than never slipping. Kids who see an adult come back and reconnect learn that hard moments can be mended.",
+      note:'The repair <em>is</em> the lesson &mdash; it teaches ruptures are survivable.'},
+    why:["Kids borrow their calm from us &mdash; it's called co-regulation. But you can't pour from an empty cup. When your own tank is low, your child's nervous system has nothing steady to sync with, and small things tip into big ones for both of you.",
+      "This isn't a discipline problem or a parenting failure. It's a systems problem: two tired nervous systems in a hard week. Tending yours isn't selfish &mdash; it's the most direct way to steady theirs."],
+    practice:{title:'One small refill, on purpose',steps:['Pick one 2-minute thing that fills <i>you</i> &mdash; coffee still hot, one song, fresh air.','Protect it like you\'d protect their bedtime.','Let them see you take care of yourself. That\'s the lesson.']},
+    talk:['What could we do when we\'re both grumpy and tired?','What\'s one thing that helps our whole family feel calmer?','Can we make a signal for "I need a reset"?'],
+    space:[{icon:'&#128267;',text:'<b>A shared "reset" ritual</b> &mdash; a family pause you can both call, no blame attached.'},{icon:'&#9749;',text:'<b>Protect one small grown-up refill</b> in the daily rhythm, visible to the whole family.'}],
+    reads:['praise','story','bear']},
+  {id:'transition', short:'Switching gears', emoji:'&#128682;', title:'They won\'t switch gears', sub:'Leaving, screens off, out the door', eyebrow:'Switching gears',
+    step1:{text:"Transitions feel like defiance, but for a kid deep in play, stopping really does feel like loss. Lower your own urgency first.",
+      micro:['Let go of the clock for ten seconds. The rush is yours, not theirs.','Get down to their level before you say anything.','Soften your voice &mdash; warm, not "we\'re late."'],
+      script:'"They\'re not defying me. Their brain just can\'t switch tracks as fast as mine."'},
+    step2:{cues:[{icon:'&#127768;',name:'Build a Bridge',warm:true,line:'"Two more turns, then we say bye-bye to the blocks. Want to help them find their bed?"',mini:'narrate the next thing warmly &mdash; "Snack is waiting for us" &mdash; so they move toward, not away.'},
+      {icon:'&#127917;',name:'Make It Silly',warm:true,line:'"Should we hop like bunnies to the door, or tiptoe like sneaky cats?"',mini:'offer a tiny choice &mdash; "red coat or blue?" A little control unsticks a lot.'}],
+      whisper:'<b>If they still resist &mdash;</b> you can be kind <em>and</em> keep the boundary. "I\'ll help your body get there" &mdash; a gentle scoop-up isn\'t a failure; it\'s staying in charge without a fight.',
+      note:'A two-minute heads-up beats a surprise every time.'},
+    why:["Switching from one activity to another takes a skill called cognitive flexibility, and it's one of the slowest parts of the brain to mature. An adult can drop what they're doing almost instantly; a young child's brain genuinely needs more runway to disengage and re-engage.",
+      "The more absorbing the activity, the harder the stop &mdash; which is exactly why the best transitions get a warning before they arrive, not an announcement once they do."],
+    practice:{title:'A two-minute warning, every time',steps:['Give one heads-up at two minutes, one at "last turn."','Use the same phrase each time so it becomes familiar, not new.','Let them help choose what happens next &mdash; it turns a stop into a start.']},
+    talk:['What\'s the hardest thing to stop doing?','What would help you know it\'s almost time to switch?','Is there a way I could give you a heads-up that would feel better?'],
+    space:[{icon:'&#9203;',text:'<b>A visual timer</b> they can watch count down, so the transition isn\'t a surprise sprung on them.'},{icon:'&#127917;',text:'<b>A transition object</b> &mdash; a song, a specific toy that "walks" them to the next thing.'}],
+    reads:['q365','flora']},
+  {id:'sibling', short:'Kids fighting', emoji:'&#9876;&#65039;', title:'The kids are fighting', sub:'Grabbing, hitting, "he started it!"', eyebrow:'Kids fighting',
+    step1:{text:"The pull is to find the culprit and rule. But playing judge usually pours fuel on it. Step in as a calm presence, not a referee.",
+      micro:['Drop the detective work &mdash; you don\'t need to know who started it.','Move in close and low, between them if it\'s physical.','Keep your face and voice neutral &mdash; no side yet.'],
+      script:'"I\'m the calm in the middle, not the judge on the bench."'},
+    step2:{cues:[{icon:'&#9995;',name:'Stop &amp; Split',warm:true,line:'"I won\'t let anyone get hurt. Bodies apart &mdash; let\'s take a breath in different spots."',mini:'a calm hand between them and a quiet "not safe" is enough. Separate first, talk later.'},
+      {icon:'&#9878;&#65039;',name:'Two True Things',warm:true,line:'"You wanted the truck, and you weren\'t done with it. Both of those are true. Let\'s figure it out."',mini:'name each kid\'s feeling out loud once. Being seen lowers the heat fast.'}],
+      whisper:"<b>If it flares again &mdash;</b> that's normal. Conflict is how they practice. Your job isn't to prevent every fight; it's to keep it safe and show them repair is possible.",
+      note:'Finding "who started it" almost always makes it worse.'},
+    why:["Sibling conflict is often less about the toy and more about a scarce resource neither of them can say out loud: your attention. Fighting is, among other things, a very effective way to guarantee a parent shows up.",
+      "It's also how kids practice negotiation, boundaries, and repair &mdash; skills that don't develop by never encountering conflict, but by going through it with someone steady nearby."],
+    practice:{title:'A weekly one-on-one, each',steps:['10 minutes, no sibling present, their choice of activity.','Protect it even on busy weeks &mdash; it\'s doing quiet preventative work.','No need to talk about the fighting during it. Just be together.']},
+    talk:['What do you wish your sibling understood about you?','When do you two have the most fun together?','What would help when you\'re both upset at the same time?'],
+    space:[{icon:'&#8987;',text:'<b>A visible turn-taking timer</b> so sharing has a clear, fair end point.'},{icon:'&#128994;',text:'<b>Separate cool-down spots</b>, close enough to feel safe, far enough to de-escalate.'}],
+    reads:['story','praise','bear']},
+  {id:'public', short:'In public', emoji:'&#128722;', title:'Melting down in public', sub:'Store, restaurant, everyone\'s watching', eyebrow:'In public',
+    step1:{text:"The hardest part isn't the meltdown &mdash; it's the eyes. That flush of shame is real. Take yourself off the stage first.",
+      micro:['Remind yourself: strangers\' opinions aren\'t your job right now. Your kid is.','Turn your body toward your child, away from the audience.','Unclench your jaw &mdash; a slow breath so your embarrassment doesn\'t leak into your voice.'],
+      script:'"A calm parent with an upset kid is not a problem. I have nothing to prove to this room."'},
+    step2:{cues:[{icon:'&#128682;',name:'Change the Scene',warm:true,line:'"Too much noise and too many people. Let\'s find a quieter spot, just us."',mini:'scoop them up and step to a corner, the car, or outside. Leaving isn\'t losing.'},
+      {icon:'&#129309;',name:'Shrink the World',warm:true,line:'"I\'m right here. It\'s just you and me for a minute &mdash; the rest can wait."',mini:'crouch, make yourself their whole view, and go quiet. Block out the room with your body.'}],
+      whisper:"<b>If people stare &mdash;</b> let them. You'll never see them again. The only relationship that matters in this moment is the one you're protecting by staying calm.",
+      note:'Abandoning the cart is almost always the right call. No shame in it.'},
+    why:["Public spaces stack the deck against regulation: more noise, more people, more unfamiliar stimulation, less predictability than home. A child who could hold it together at home may simply have less capacity left once you add a store's lights and crowds on top.",
+      "It rarely means you're doing something wrong as a parent. It usually means the environment asked for more regulation than was available in that moment &mdash; which is fixable with a little prep, not something to prevent by never leaving the house."],
+    practice:{title:'An outing "preview" before you go',steps:['30 seconds naming what\'s coming: where, how long, what\'s the plan.','Name one hard part in advance &mdash; "it might be loud" &mdash; so it\'s not a surprise.','Pack one familiar comfort item just for the outing.']},
+    talk:['What\'s the hardest part about going to busy places?','Is there a signal you could give me when it\'s getting to be too much?','What would help you feel ready before we go somewhere new?'],
+    space:[{icon:'&#127911;',text:'<b>A "go bag"</b> with a few familiar, comforting items kept ready for outings.'},{icon:'&#128203;',text:'<b>A simple outing routine</b> &mdash; the same few steps before you leave, every time.'}],
+    reads:['q365','flora']},
+  {id:'bedtime', short:'Bedtime', emoji:'&#127769;', title:'Bedtime is a battle', sub:'Won\'t settle, "one more," keeps popping up', eyebrow:'Bedtime',
+    step1:{text:"Bedtime resistance hits when your own tank is emptiest &mdash; the end of a long day. The stall isn't defiance; a tired brain fights sleep. Steady yourself before the next round.",
+      micro:['Let go of "by 8:00." A calm 8:20 beats a fought 7:55.','Soften your shoulders and slow your voice to a near-whisper.','Get low and close &mdash; your calm body is the sleep signal.'],
+      script:'"They\'re not stalling to win. Their tired brain is scared to let go of the day."'},
+    step2:{cues:[{icon:'&#127915;',name:'One Last Ticket',warm:true,line:'"You get one more thing &mdash; a hug or a sip of water. You pick, then it\'s rest time."',mini:'hold up one finger. "One more, then quiet." A clear limit is comforting, not mean.'},
+      {icon:'&#128715;',name:'Stay Close',warm:true,line:'"I\'ll sit right here while your body gets sleepy. You don\'t have to do it alone."',mini:'a hand on their back, no words. Your steady breathing sets the pace for theirs.'}],
+      whisper:'<b>If they keep popping up &mdash;</b> calmly walk them back, minimal words, every time. Boring and predictable is the goal &mdash; not a lecture, not a negotiation. Consistency is the message.',
+      note:'The nightly wind-down routine lives below &mdash; not something to build mid-battle.'},
+    why:["Two things collide at bedtime: a tired brain that's biologically primed to fight sleep when overtired, and a day's worth of separation finally catching up as the lights go down. Letting go of you, and of the day, is genuinely harder at night than it sounds.",
+      "A predictable wind-down doesn't just make bedtime calmer in the moment &mdash; it also reduces the nightly battle over time, because a familiar sequence tells the nervous system what's coming, which lowers resistance before it starts."],
+    practice:{title:'The same three steps, every night',steps:['Bath or wash-up, book, lights &mdash; same order, most nights.','Start it 10 minutes earlier than feels necessary.','Say the same goodnight phrase every time, like an anchor.']},
+    talk:['What helps you feel safe when the lights go off?','Is there a worry that tends to show up at bedtime?','What\'s your favorite part of our bedtime routine?'],
+    space:[{icon:'&#128197;',text:'<b>A visual bedtime chart</b> showing the steps in order, at their eye level.'},{icon:'&#128367;',text:'<b>A nightlight or comfort object</b> that\'s theirs alone, part of the routine.'}],
+    reads:['flora','q365','stone']},
+  {id:'mealtime', short:'Mealtime', emoji:'&#127869;&#65039;', title:'Mealtime is chaos', sub:'Won\'t sit, throwing, up and down', eyebrow:'Mealtime',
+    step1:{text:"A chaotic table pulls you straight into \"sit DOWN.\" But young bodies aren't built to sit still for long, and the wiggles aren't misbehavior. Lower your own volume first.",
+      micro:['Drop the goal of a perfect, seated meal. Fed and connected wins.','Unclench your jaw; take the edge out of your voice.','Come down to their eye level instead of standing over the table.'],
+      script:'"Wiggly bodies are normal bodies. I can keep it safe without making it a war."'},
+    step2:{cues:[{icon:'&#129681;',name:'Job at the Table',warm:true,line:'"Your body\'s got the wiggles! Can you be my helper and hand out the napkins?"',mini:'give hands something to do &mdash; pouring, stirring. A busy body settles faster than a scolded one.'},
+      {icon:'&#9201;&#65039;',name:'Wiggle, Then Sit',warm:true,line:'"Let\'s shake all the wiggles out &mdash; big! &mdash; then bottoms on chairs for a bite."',mini:'one clear rule, warmly. "Feet down to eat, standing means all done." Then mean it.'}],
+      whisper:'<b>If they\'re truly done &mdash;</b> that\'s okay. A short meal isn\'t a failure. Forcing a seated battle teaches kids the table is a fight; a calm "all done, then" keeps food neutral.',
+      note:'Picky eating and food rules are calmer-day work &mdash; save them for below.'},
+    why:["Sitting still through a whole meal asks for impulse control and body awareness that's still under construction in young kids. The wiggling usually isn't a rejection of the food or the family time &mdash; it's a body that's done sitting before the plate is done.",
+      "Food is also one of the few areas where a young child has real control over their own body, which is exactly why it can turn into a power struggle so easily. The less mealtime becomes a fight, the less there is to push back against."],
+    practice:{title:'Family-style, no-pressure serving',steps:['Put food in the middle; let them serve their own plate.','No pressure to finish or try &mdash; their body decides the amount.','Keep your own reactions neutral, even to "no thank you."']},
+    talk:['What foods feel good to eat, and which ones feel weird?','What would make sitting at the table easier for you?','Is there a job you\'d like at dinner &mdash; setting the table, pouring water?'],
+    space:[{icon:'&#128203;',text:'<b>A simple placemat routine</b> &mdash; the same seat, same setup, so mealtime feels familiar.'},{icon:'&#128260;',text:'<b>A rotating "helper" job</b> so there\'s something to do besides just sit.'}],
+    reads:['praise','story','bear']}
+];
+
+const READS = {
+  q365:{icon:'&#128196;',cls:'article',href:'https://open.substack.com/pub/kidtalk/p/365-questions-to-ask-your-kids-in',title:'365 Questions to Ask Your Kids in 2026',blurb:'Connection is built quietly, through the questions we ask and how we listen.',meta:'Article'},
+  praise:{icon:'&#128196;',cls:'article',href:'https://open.substack.com/pub/kidtalk/p/good-job-is-boring-and-unspecific',title:'100 Ways to Praise Your Kids',blurb:'Moving past auto-pilot "good job" toward feedback with substance.',meta:'Article'},
+  story:{icon:'&#128196;',cls:'article',href:'https://open.substack.com/pub/kidtalk/p/jeopardy-ice-and-the-promise-of-a',title:'A Story I Can\'t Stop Telling About Justice',blurb:'A small moment that keeps teaching &mdash; proof little acts matter.',meta:'Article'},
+  flora:{icon:'&#128218;',cls:'',href:'https://amzn.to/3MSJR0O',title:'Flora\'s Wish',blurb:'Uses a dandelion\'s life cycle to show that endings can sit beside new beginnings.',meta:'Book'},
+  bear:{icon:'&#128218;',cls:'',href:'https://amzn.to/4kRv9Uo',title:'The Bear and the Wildcat',blurb:'Healing that begins with being seen rather than being fixed.',meta:'Book'},
+  stone:{icon:'&#128218;',cls:'',href:'https://amzn.to/46l0h8Q',title:'The Remembering Stone',blurb:'How big feelings can live quietly inside everyday objects.',meta:'Book'}
+};
+
+/* ================= RENDER: tiles ================= */
+function tileHTML(s){
+  return '<button class="tile" onclick="go(\'sit-'+s.id+'\')">'
+    + '<span class="emoji">'+s.emoji+'</span>'
+    + '<span class="tx"><b>'+s.title+'</b><small>'+s.sub+'</small></span>'
+    + '<span class="chev">&rsaquo;</span></button>';
+}
+document.getElementById('situationsTiles').innerHTML = SITUATIONS.map(tileHTML).join('');
+
+/* ================= RENDER: situation pages (landing + now + prepare) ================= */
+function cueHTML(c){
+  return '<details class="cue-exp'+(c.warm?' warm':'')+'"><summary><span class="cue-ic">'+c.icon+'</span><span class="cue-name">'+c.name+'</span><span class="exp-chev">&#9656;</span></summary>'
+    + '<div class="cue-do">'+c.line+'</div>'
+    + '<div class="cue-mini"><span class="mini-ic">&#129292;</span><p><b>Even smaller:</b> '+c.mini+'</p></div></details>';
+}
+function readHTML(key){
+  const r = READS[key]; if(!r) return '';
+  return '<a class="res '+r.cls+'" href="'+r.href+'" target="_blank" rel="noopener"><span class="rt">'+r.icon+'</span><span class="rx"><b>'+r.title+'</b><small>'+r.blurb+'</small><span class="meta">'+r.meta+'</span></span></a>';
+}
+function landingHTML(s){
+  return '<section class="view" id="sit-'+s.id+'">'
+    + '<div class="topbar"><button class="back" onclick="go(\'situations-list\')">&larr;</button><span class="eyebrow">'+s.eyebrow+'</span></div>'
+    + '<h3 class="h-title">'+s.title+'</h3><p class="h-sub">'+s.sub+'</p>'
+    + '<button class="choice now" onclick="openVisit(\''+s.id+'\',\'now\')"><span class="ic">'+s.emoji+'</span><h3>Right now</h3><p>Quick script &mdash; two steps, for you and for them.</p></button>'
+    + '<button class="choice later" onclick="go(\'sit-'+s.id+'-prepare\')"><span class="ic">&#127793;</span><h3>Prepare</h3><p>The why, a weekly practice, and ways to talk about it.</p></button>'
+    + '<div class="sos-link" onclick="go(\'crisis\')"><span class="sos-ic">SOS</span>In crisis or worried about safety? Get help now</div>'
+    + '</section>';
+}
+function nowPageHTML(s){
+  const micro = s.step1.micro.map((m,i)=>'<div class="microstep"><span class="n">'+(i+1)+'</span><p>'+m+'</p></div>').join('');
+  const cues = s.step2.cues.map(cueHTML).join('<div style="text-align:center;font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin:6px 0;opacity:.6;">or</div>');
+  return '<section class="view" id="sit-'+s.id+'-now">'
+    + '<div class="topbar"><button class="back" onclick="go(\'sit-'+s.id+'\')">&larr;</button><span class="eyebrow">'+s.eyebrow+' &middot; Right now</span></div>'
+    + '<h3 class="h-title">'+s.title+'</h3>'
+    + '<span class="steplabel you">Step 1 &middot; For you</span>'
+    + '<div class="card"><p class="norm">'+s.step1.text+'</p>'+micro
+      + '<div class="script"><div class="k">Say this to yourself</div><p>'+s.step1.script+'</p></div></div>'
+    + '<span class="steplabel child">Step 2 &middot; With your child</span>'
+    + '<div class="card"><p class="norm">Pick <b>one</b>. Tap for more only if you want it.</p>'+cues
+      + '<div class="whisper">'+s.step2.whisper+'</div>'
+      + '<div class="parents-note"><span class="pn-i">i</span>'+s.step2.note+'</div></div>'
+    + '<p class="done" style="text-align:center;font-size:12.5px;color:var(--ink-soft);margin:14px 0 4px;">That\'s the whole task for right now. Closing the app here is completely fine.</p>'
+    + '<button class="choice later" style="padding:16px 18px;" onclick="go(\'sit-'+s.id+'-prepare\')"><h3 style="font-size:16px;margin:0;">When you\'re calmer &rarr;</h3><p style="margin-top:4px;">The why, and a practice for the week.</p></button>'
+    + '</section>';
+}
+function preparePageHTML(s){
+  const practiceSteps = s.practice.steps.map(st=>'<li>'+st+'</li>').join('');
+  const talk = s.talk.map(t=>'<div class="qbubble">'+t+'</div>').join('');
+  const space = s.space.map(sp=>'<div class="space-tip"><span class="st">'+sp.icon+'</span><p>'+sp.text+'</p></div>').join('');
+  const reads = s.reads.map(readHTML).join('');
+  return '<section class="view" id="sit-'+s.id+'-prepare">'
+    + '<div class="topbar"><button class="back" onclick="go(\'sit-'+s.id+'\')">&larr;</button><span class="eyebrow">'+s.eyebrow+' &middot; Prepare</span></div>'
+    + '<h3 class="h-title">'+s.title+'</h3><p class="h-sub">A little understanding, one small practice, and ways to explore it together.</p>'
+    + '<div class="jsection"><div class="kicker"><span class="badge">&#129504;</span><h4>Why this happens</h4><span class="free-flag">Free</span></div>'
+      + '<p class="body">'+s.why[0]+'</p><p class="body">'+s.why[1]+'</p></div>'
+    + '<div class="jsection"><div class="kicker"><span class="badge">&#127793;</span><h4>This week\'s tiny practice</h4></div>'
+      + '<div class="practice"><div class="tag">Try for 5 days</div><h5>'+s.practice.title+'</h5><ol>'+practiceSteps+'</ol></div></div>'
+    + '<div class="jsection"><div class="kicker"><span class="badge">&#128172;</span><h4>Talk about it together</h4></div>'+talk+'</div>'
+    + '<div class="jsection"><div class="kicker"><span class="badge">&#127794;</span><h4>Try this in your space</h4></div>'+space+'</div>'
+    + '<div class="jsection"><div class="kicker"><span class="badge">&#128218;</span><h4>Gentle reads &amp; tools</h4></div>'
+      + '<p class="body" style="margin-bottom:14px;">Hand-picked from the Dira SEL library.</p>'+reads+'</div>'
+    + '<div class="softnote"><b>Notice:</b> nowhere here does the app mention a chapter, a story, or a book you must own. Content is quietly sourced from Dira &mdash; the surface stays 100% parent-native.</div>'
+    + '</section>';
+}
+document.getElementById('situationPages').innerHTML = SITUATIONS.map(s=>landingHTML(s)+nowPageHTML(s)+preparePageHTML(s)).join('');
+
+/* ================= NAV ================= */
+const tabFor = {'home':'home','situations-list':'situations','month':'month','library':'library'};
+SITUATIONS.forEach(s=>{ tabFor['sit-'+s.id]='situations'; tabFor['sit-'+s.id+'-now']='situations'; tabFor['sit-'+s.id+'-prepare']='situations'; });
+
+function go(id){
+  if(!document.getElementById(id)) id = 'home';
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('viewport').scrollTop = 0;
+  const tab = tabFor[id] || '';
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  if(id==='month') renderMonth();
+  if(id==='home') renderHomeWidgets();
+}
+function openVisit(id, which){
+  recordVisit(id);
+  go('sit-'+id+(which==='now' ? '-now' : ''));
+}
+function filterRes(pill,type){
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+  pill.classList.add('on');
+  document.querySelectorAll('#reslist .res').forEach(r=>{ r.style.display = (type==='all' || r.dataset.t===type) ? 'flex' : 'none'; });
+}
+
+/* ================= FREEMIUM GATING (Prepare pages) ================= */
+const PAID_HEADINGS = ["This week's tiny practice","Talk about it together","Try this in your space"];
+function applyGating(){
+  document.querySelectorAll('.jsection').forEach(sec=>{
+    if(sec.dataset.gated) return;
+    const h = sec.querySelector('h4');
+    if(!h || !PAID_HEADINGS.includes(h.textContent.trim())) return;
+    sec.dataset.gated = '1';
+    sec.classList.add('paidblock');
+    const kicker = sec.querySelector('.kicker');
+    if(kicker && !kicker.querySelector('.locked-badge')){
+      const badge = document.createElement('span');
+      badge.className = 'locked-badge';
+      badge.innerHTML = '<span class="lk">&#128274;</span> Plus';
+      kicker.appendChild(badge);
+    }
+    const inner = document.createElement('div');
+    inner.className = 'paid-inner';
+    const nodes = Array.from(sec.childNodes).filter(n=> !(n.nodeType===1 && n.classList.contains('kicker')));
+    nodes.forEach(n=>inner.appendChild(n));
+    sec.appendChild(inner);
+    sec.addEventListener('click', ()=>{ if(document.body.classList.contains('tier-free')) openUpsell(); });
+  });
+}
+applyGating();
+function setTier(tier){
+  document.body.classList.remove('tier-free','tier-paid');
+  document.body.classList.add('tier-'+tier);
+  document.querySelector('.tier-switch .free-b').classList.toggle('on', tier==='free');
+  document.querySelector('.tier-switch .paid-b').classList.toggle('on', tier==='paid');
+  document.getElementById('tierStatusText').textContent = (tier==='free')
+    ? 'Free · Situations + Library · Deeper journeys locked'
+    : 'Dira Plus · Everything unlocked';
+}
+function openUpsell(){ document.getElementById('upsell').classList.add('open'); }
+function closeUpsell(){ document.getElementById('upsell').classList.remove('open'); }
+
+/* ================= STORAGE ================= */
+const CK_KEY = 'dira_checkins_v3';
+const RETENTION_DAYS = 90;
+const MAX_TAGS_PER_DAY = 3;
+function loadCheckins(){ try{ return JSON.parse(localStorage.getItem(CK_KEY)||'{}'); }catch(e){ return {}; } }
+function saveCheckins(obj){ try{ localStorage.setItem(CK_KEY, JSON.stringify(obj)); }catch(e){} }
+function todayKey(d){ d = d || new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function purgeOld(){
+  const data = loadCheckins();
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-RETENTION_DAYS); cutoff.setHours(0,0,0,0);
+  let changed = false;
+  Object.keys(data).forEach(k=>{
+    const d = new Date(k+'T00:00:00');
+    if(d < cutoff){ delete data[k]; changed = true; }
+  });
+  if(changed) saveCheckins(data);
+  return data;
+}
+
+/* Seed light mock history so Home + Your Month have something real to show on first open.
+   Only runs if there is no existing data at all — never overwrites a returning user.
+   Guarded: sandboxed preview panels sometimes block localStorage entirely, and this runs
+   at load time before anything else, so an uncaught throw here would halt the whole script. */
+function seedMockDataIfEmpty(){
+  let existing;
+  try{ existing = localStorage.getItem(CK_KEY); }catch(e){ return; }
+  if(existing) return;
+  const data = {};
+  const today = new Date();
+  const pattern = ['normal','easy','hard:bedtime','normal','hard:meltdown','easy','rough:bedtime,meltdown'];
+  for(let i=1;i<=35;i++){
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    const p = pattern[i % pattern.length];
+    const [tier, tagStr] = p.includes(':') ? p.split(':') : [p, ''];
+    const tag = tagStr ? tagStr.split(',') : [];
+    data[todayKey(d)] = {tier:tier, tag:tag, source:'explicit'};
+  }
+  saveCheckins(data);
+}
+seedMockDataIfEmpty();
+
+/* ================= CHECK-IN (Home) ================= */
+function tapCheckin(tier){
+  const data = loadCheckins();
+  const key = todayKey();
+  data[key] = {tier:tier, tag:(data[key]&&data[key].tag)||[], source:'explicit'};
+  saveCheckins(data);
+  renderCheckinState();
+  renderHomeWidgets();
+}
+function tapTag(key, tagId){
+  const data = loadCheckins();
+  if(!data[key]) return;
+  const tags = data[key].tag || [];
+  const idx = tags.indexOf(tagId);
+  if(idx > -1){
+    tags.splice(idx,1);
+  } else if(tags.length < MAX_TAGS_PER_DAY){
+    tags.push(tagId);
+  }
+  data[key].tag = tags;
+  saveCheckins(data);
+  renderCheckinState();
+  renderHomeWidgets();
+}
+function showTagPicker(key){
+  const data = loadCheckins();
+  const entry = data[key];
+  const tags = (entry && entry.tag) || [];
+  const wrap = document.getElementById('ckTags');
+  const capped = tags.length >= MAX_TAGS_PER_DAY;
+  const chips = SITUATIONS.map(s=>{
+    const on = tags.includes(s.id);
+    const maxed = capped && !on;
+    return '<button class="ck-chip'+(on?' on':'')+(maxed?' maxed':'')+'" onclick="tapTag(\''+key+'\',\''+s.id+'\')">'+s.emoji+' '+s.short+'</button>';
+  }).join('');
+  const hint = capped ? 'Up to 3 a day &mdash; tap one to swap it out.' : 'What was it, if you want to say &mdash; totally optional.';
+  wrap.innerHTML = '<div class="ck-tag-hint">'+hint+'</div>' + chips;
+  wrap.classList.add('show');
+}
+function renderCheckinState(){
+  const data = loadCheckins();
+  const key = todayKey();
+  const entry = data[key];
+  document.querySelectorAll('.ck-btn').forEach(b=>b.classList.toggle('selected', !!entry && entry.tier===b.dataset.tier));
+  const done = document.getElementById('ckDone');
+  if(entry && entry.source==='explicit'){
+    done.style.display = 'block';
+    done.textContent = 'Logged for today. Tap another to change it.';
+  } else { done.style.display = 'none'; }
+  const wrap = document.getElementById('ckTags');
+  if(entry && (entry.tier==='hard'||entry.tier==='rough')){
+    showTagPicker(key);
+  } else {
+    wrap.classList.remove('show');
+    wrap.innerHTML = '';
+  }
+}
+function recordVisit(situationId){
+  const data = loadCheckins();
+  const key = todayKey();
+  if(!data[key]){
+    data[key] = {tier:'hard', tag:[situationId], source:'inferred'};
+    saveCheckins(data);
+  } else if(data[key].source==='inferred'){
+    const tags = data[key].tag || [];
+    if(!tags.includes(situationId) && tags.length < MAX_TAGS_PER_DAY) tags.push(situationId);
+    data[key].tag = tags;
+    saveCheckins(data);
+  }
+  renderCheckinState();
+  renderHomeWidgets();
+}
+
+/* ================= HOME: COS card + tally ================= */
+function last7Entries(){
+  const data = purgeOld();
+  const today = new Date();
+  const out = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    const e = data[todayKey(d)];
+    if(e) out.push(e);
+  }
+  return out;
+}
+function tagTallyFrom(entries){
+  const counts = {};
+  entries.forEach(e=>{
+    if(!(e.tier==='hard'||e.tier==='rough')) return;
+    (e.tag||[]).forEach(tagId=>{ counts[tagId] = (counts[tagId]||0)+1; });
+  });
+  return Object.keys(counts).map(id=>({id, count:counts[id]})).sort((a,b)=>b.count-a.count);
+}
+function situationById(id){ return SITUATIONS.find(s=>s.id===id); }
+
+function renderHomeWidgets(){
+  const data = purgeOld();
+  const daysTracked = Object.keys(data).length;
+  const entries = last7Entries();
+  const tally = tagTallyFrom(entries);
+
+  const cosSlot = document.getElementById('cosSlot');
+  if(daysTracked < 3){
+    cosSlot.innerHTML = '';
+  } else if(tally.length === 0){
+    cosSlot.innerHTML = '<div class="cos-card"><div class="cos-k"><span class="cos-av"></span>Chief of staff</div><p>Steady week so far &mdash; nothing\'s come up more than once.</p></div>';
+  } else {
+    const topTwo = (tally.length > 1 && tally[1].count === tally[0].count) ? tally.slice(0,2) : tally.slice(0,1);
+    const linkSpan = (id)=>{
+      const sit = situationById(id);
+      return '<span class="cos-inline-link" onclick="go(\'sit-'+sit.id+'\')">'+sit.short.toLowerCase()+'</span>';
+    };
+    let intro;
+    if(topTwo.length === 1){
+      intro = 'It looks like '+linkSpan(topTwo[0].id)+' has been hard for you this week. That\'s why Dira is here to help prepare you for when it happens next.';
+    } else {
+      intro = 'It looks like '+linkSpan(topTwo[0].id)+' and '+linkSpan(topTwo[1].id)+' have been hard for you this week. That\'s why Dira is here to help prepare you for when they happen next.';
+    }
+    cosSlot.innerHTML = '<div class="cos-card"><div class="cos-k"><span class="cos-av"></span>Chief of staff</div>'
+      + '<p>'+intro+'</p></div>';
+  }
+
+  const tallySlot = document.getElementById('tallySlot');
+  if(tally.length === 0){
+    tallySlot.innerHTML = '<div class="tally-card"><div class="tc-head"><span class="tc-title">This week</span></div><div class="tally-empty">Nothing logged yet this week. Check in above, or visit a situation &mdash; either one starts filling this in.</div></div>';
+  } else {
+    const rows = tally.map(t=>{
+      const sit = situationById(t.id);
+      return '<div class="tally-row" onclick="go(\'sit-'+sit.id+'\')"><span class="tr-emoji">'+sit.emoji+'</span><span class="tr-label">'+sit.short+'</span><span class="tr-count">'+t.count+'</span></div>';
+    }).join('');
+    tallySlot.innerHTML = '<div class="tally-card"><div class="tc-head"><span class="tc-title">This week</span><span class="tc-more" onclick="go(\'month\')">Your month &rsaquo;</span></div>'+rows+'</div>';
+  }
+}
+
+/* ================= YOUR MONTH ================= */
+let monthOffset = 0;
+function renderMonth(){
+  const data = purgeOld();
+  const dates = Object.keys(data).sort();
+  const container = document.getElementById('monthContent');
+  if(dates.length === 0){
+    container.innerHTML = '<div class="month-cold"><div class="wc-ic">&#128197;</div><p><b>Still getting to know your month.</b><br>Check in on the home tab, or visit a situation &mdash; either one starts filling this in.</p></div>';
+    return;
+  }
+  const now = new Date();
+  const viewDate = new Date(now.getFullYear(), now.getMonth()+monthOffset, 1);
+  const y = viewDate.getFullYear(), m = viewDate.getMonth();
+  const monthLabel = viewDate.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const firstDow = new Date(y,m,1).getDay();
+  const daysInMonth = new Date(y,m+1,0).getDate();
+  const todayKeyStr = todayKey();
+
+  const oldestDate = new Date(dates[0]+'T00:00:00');
+  const oldestMonthStart = new Date(oldestDate.getFullYear(), oldestDate.getMonth(), 1);
+  const canGoBack = new Date(y, m-1, 1) >= oldestMonthStart;
+  const canGoForward = monthOffset < 0;
+
+  const cellArr = [];
+  for(let i=0;i<firstDow;i++){ cellArr.push('<div class="md-cell"><div class="wd empty-cell"></div></div>'); }
+  for(let day=1; day<=daysInMonth; day++){
+    const d = new Date(y,m,day);
+    const key = todayKey(d);
+    const entry = data[key];
+    const isToday = key===todayKeyStr;
+    const isFuture = d > now;
+    let cls = 'wd';
+    let title = '';
+    if(!isFuture && entry){
+      cls += ' '+entry.tier;
+      if(entry.source==='inferred') cls += ' inferred';
+      const lbl = (entry.tag && entry.tag.length) ? entry.tag.map(id=>situationById(id).short).join(', ')+' - ' : '';
+      title = lbl + entry.tier + (entry.source==='inferred' ? ' (from a visit)' : '');
+    }
+    cellArr.push('<div class="md-cell'+(isToday?' today':'')+'"><div class="'+cls+'" title="'+title.replace(/"/g,'')+'"></div></div>');
+  }
+  const totalCells = firstDow + daysInMonth;
+  const trailing = (7 - (totalCells % 7)) % 7;
+  for(let i=0;i<trailing;i++){ cellArr.push('<div class="md-cell"><div class="wd empty-cell"></div></div>'); }
+
+  let rowsHTML = '';
+  for(let i=0;i<cellArr.length;i+=7){
+    rowsHTML += '<div class="month-row">'+cellArr.slice(i,i+7).join('')+'</div>';
+  }
+
+  const dowLabels = ['S','M','T','W','T','F','S'];
+
+  container.innerHTML = ''
+    + '<div class="month-head">'
+      + '<button class="month-nav" onclick="monthOffset--;renderMonth()" '+(canGoBack?'':'disabled')+'>&larr;</button>'
+      + '<span class="month-title">'+monthLabel+'</span>'
+      + '<button class="month-nav" onclick="monthOffset++;renderMonth()" '+(canGoForward?'':'disabled')+'>&rarr;</button>'
+    + '</div>'
+    + '<div class="week-legend">'
+      + '<div class="wl-item"><span class="wl-dot easy"></span>Easy</div>'
+      + '<div class="wl-item"><span class="wl-dot normal"></span>Normal</div>'
+      + '<div class="wl-item"><span class="wl-dot hard"></span>Hard moment</div>'
+      + '<div class="wl-item"><span class="wl-dot rough"></span>Rough day</div>'
+      + '<div class="wl-item"><span class="wl-dot hard inferred"></span>Inferred</div>'
+    + '</div>'
+    + '<div class="month-grid-card"><div class="month-dow">'+dowLabels.map(l=>'<span>'+l+'</span>').join('')+'</div>'+rowsHTML+'</div>'
+    + '<div class="month-cta-row"><button class="month-btn" onclick="exportCSV()">Export as CSV</button></div>'
+    + '<p class="retention-note">Your check-ins are kept for 3 months on this device, then automatically deleted. Nothing is sent anywhere &mdash; export a copy any time before then if you want to keep it.</p>';
+}
+
+function exportCSV(){
+  const data = purgeOld();
+  const rows = [['date','mood','situation','source']];
+  Object.keys(data).sort().forEach(k=>{
+    const e = data[k];
+    const label = (e.tag && e.tag.length) ? e.tag.map(id=> situationById(id) ? situationById(id).short : id).join('; ') : '';
+    rows.push([k, e.tier, label, e.source]);
+  });
+  const csv = rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'dira-checkins.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+renderCheckinState();
+renderHomeWidgets();
+
+/* ================= PWA plumbing ================= */
+(function handleDeepLink(){
+  try{ const target = new URLSearchParams(location.search).get('screen'); if(target) go(target); }catch(e){}
+})();
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
+function remember(key, val){ try{ localStorage.setItem(key, val); }catch(e){} }
+function recall(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+const banner  = document.getElementById('installBanner');
+const iosHint = document.getElementById('iosHint');
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault(); deferredPrompt = e;
+  if(!isStandalone && recall('dira_install_dismissed') !== '1'){ banner.classList.add('show'); }
+});
+document.getElementById('installGo').addEventListener('click', async ()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null;
+  banner.classList.remove('show');
+});
+document.getElementById('installX').addEventListener('click', ()=>{
+  banner.classList.remove('show'); remember('dira_install_dismissed','1');
+});
+window.addEventListener('appinstalled', ()=>{ banner.classList.remove('show'); remember('dira_install_dismissed','1'); });
+(function iosInstall(){
+  const ua = window.navigator.userAgent;
+  const isIOS = /iphone|ipad|ipod/i.test(ua);
+  const isSafari = /safari/i.test(ua) && !/crios|fxios|edgios/i.test(ua);
+  if(isIOS && isSafari && !isStandalone && recall('dira_install_dismissed') !== '1'){
+    banner.querySelector('.ib-go').textContent = 'How';
+    banner.classList.add('show');
+    banner.querySelector('.ib-go').onclick = ()=>{ banner.classList.remove('show'); iosHint.classList.add('show'); };
+    iosHint.addEventListener('click', ()=>{ iosHint.classList.remove('show'); remember('dira_install_dismissed','1'); });
+  }
+})();
+</script>
+</body>
+</html>
