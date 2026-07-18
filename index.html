@@ -85,6 +85,7 @@
 
   .cos-card{background:linear-gradient(135deg,var(--lav-wash),#faf7ff);border:1px solid rgba(143,127,214,.25);border-radius:20px;padding:18px;margin-bottom:16px;}
   .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8f7fd6;margin-bottom:8px;}
+  .cos-caption{font-size:11px;color:var(--ink-soft);margin:-4px 0 10px;line-height:1.4;}
   .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--lav),#b9a6f0);flex:none;}
   .cos-card p{font-size:14.5px;line-height:1.55;color:var(--ink);margin-bottom:0;}
   .cos-inline-link{color:#5f4bb3;font-weight:700;text-decoration:underline;cursor:pointer;}
@@ -325,7 +326,7 @@
             </div>
 
             <div class="checkin" id="checkin">
-              <div class="ck-q">One tap. No follow-up questions unless you want them.</div>
+              <div class="ck-q">One tap. On hard or rough days, add what happened so Dira can tailor what it shows you.</div>
               <div class="ck-row">
                 <button class="ck-btn easy" data-tier="easy" onclick="tapCheckin('easy')"><span class="ck-dot"></span><span class="ck-label">Easy day</span></button>
                 <button class="ck-btn normal" data-tier="normal" onclick="tapCheckin('normal')"><span class="ck-dot"></span><span class="ck-label">Normal</span></button>
@@ -865,10 +866,11 @@ function renderHomeWidgets(){
   const tally = tagTallyFrom(entries);
 
   const cosSlot = document.getElementById('cosSlot');
+  const cosHeader = '<div class="cos-k"><span class="cos-av"></span>Chief of staff</div><div class="cos-caption">Based on what you log &mdash; the more you tap, the sharper this gets.</div>';
   if(daysTracked < 3){
     cosSlot.innerHTML = '';
   } else if(tally.length === 0){
-    cosSlot.innerHTML = '<div class="cos-card"><div class="cos-k"><span class="cos-av"></span>Chief of staff</div><p>Steady week so far &mdash; nothing\'s come up more than once.</p></div>';
+    cosSlot.innerHTML = '<div class="cos-card">'+cosHeader+'<p>Steady week so far &mdash; nothing\'s come up more than once.</p></div>';
   } else {
     const topTwo = (tally.length > 1 && tally[1].count === tally[0].count) ? tally.slice(0,2) : tally.slice(0,1);
     const linkSpan = (id)=>{
@@ -877,11 +879,11 @@ function renderHomeWidgets(){
     };
     let intro;
     if(topTwo.length === 1){
-      intro = 'It looks like '+linkSpan(topTwo[0].id)+' has been hard for you this week. That\'s why Dira is here to help prepare you for when it happens next.';
+      intro = 'It looks like '+linkSpan(topTwo[0].id)+' has been hard this week. Tap to prepare for next time.';
     } else {
-      intro = 'It looks like '+linkSpan(topTwo[0].id)+' and '+linkSpan(topTwo[1].id)+' have been hard for you this week. That\'s why Dira is here to help prepare you for when they happen next.';
+      intro = 'It looks like '+linkSpan(topTwo[0].id)+' and '+linkSpan(topTwo[1].id)+' have been hard this week. Tap either to prepare for next time.';
     }
-    cosSlot.innerHTML = '<div class="cos-card"><div class="cos-k"><span class="cos-av"></span>Chief of staff</div>'
+    cosSlot.innerHTML = '<div class="cos-card">'+cosHeader
       + '<p>'+intro+'</p></div>';
   }
 
