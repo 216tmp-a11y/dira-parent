@@ -83,12 +83,12 @@
   .ck-chip.on{background:var(--now-1);border-color:var(--now-1);color:#fff;}
   .ck-chip.maxed{opacity:.4;}
 
-  .cos-card{background:linear-gradient(135deg,var(--lav-wash),#faf7ff);border:1px solid rgba(143,127,214,.25);border-radius:20px;padding:18px;margin-bottom:16px;}
-  .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8f7fd6;margin-bottom:8px;}
-  .cos-caption{font-size:11px;color:var(--ink-soft);margin:-4px 0 10px;line-height:1.4;}
-  .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--lav),#b9a6f0);flex:none;}
-  .cos-card p{font-size:14.5px;line-height:1.55;color:var(--ink);margin-bottom:0;}
-  .cos-inline-link{color:#5f4bb3;font-weight:700;text-decoration:underline;cursor:pointer;}
+  .cos-card{background:linear-gradient(135deg,#4a3a80,#5f4bb3);border:1px solid rgba(0,0,0,.08);border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 14px 30px -18px rgba(74,58,128,.55);}
+  .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:8px;}
+  .cos-caption{font-size:11px;color:rgba(255,255,255,.72);margin:-4px 0 10px;line-height:1.4;}
+  .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:#fff;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.35);}
+  .cos-card p{font-size:14.5px;line-height:1.55;color:#fff;margin-bottom:0;}
+  .cos-inline-link{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:2px;cursor:pointer;}
 
   .tally-card{background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:16px 18px;margin-bottom:16px;}
   .tally-card .tc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
@@ -326,7 +326,7 @@
             </div>
 
             <div class="checkin" id="checkin">
-              <div class="ck-q">One tap. On hard or rough days, add what happened so Dira can tailor what it shows you.</div>
+              <div class="ck-q">One tap. On <b>hard</b> or <b>rough</b> days, add what happened so Dira can tailor what it shows you.</div>
               <div class="ck-row">
                 <button class="ck-btn easy" data-tier="easy" onclick="tapCheckin('easy')"><span class="ck-dot"></span><span class="ck-label">Easy day</span></button>
                 <button class="ck-btn normal" data-tier="normal" onclick="tapCheckin('normal')"><span class="ck-dot"></span><span class="ck-label">Normal</span></button>
@@ -752,13 +752,26 @@ function seedMockDataIfEmpty(){
   if(existing) return;
   const data = {};
   const today = new Date();
-  const pattern = ['normal','easy','hard:bedtime','normal','hard:meltdown','easy','rough:bedtime,meltdown'];
-  for(let i=1;i<=35;i++){
+  const setDay = (i, tier, tags)=>{
     const d = new Date(today); d.setDate(d.getDate()-i);
-    const p = pattern[i % pattern.length];
+    data[todayKey(d)] = {tier:tier, tag:tags, source:'explicit'};
+  };
+  // Last 6 days (i=1..6) drive Home's weekly tally/COS — today (i=0) is left open
+  // so the live check-in still feels live. Tuned so meltdown and "both at our
+  // limit" tie at 2 each, giving a real example of the tie-handling in COS.
+  setDay(1, 'hard',   ['meltdown']);
+  setDay(2, 'hard',   ['limit']);
+  setDay(3, 'normal', []);
+  setDay(4, 'hard',   ['meltdown']);
+  setDay(5, 'easy',   []);
+  setDay(6, 'rough',  ['limit','bedtime']);
+  // Older days: varied texture so Your Month doesn't look sparse, doesn't
+  // affect the weekly tally since it's outside the 7-day window.
+  const older = ['normal','easy','hard:bedtime','normal','hard:sibling','easy','rough:mealtime'];
+  for(let i=7;i<=35;i++){
+    const p = older[i % older.length];
     const [tier, tagStr] = p.includes(':') ? p.split(':') : [p, ''];
-    const tag = tagStr ? tagStr.split(',') : [];
-    data[todayKey(d)] = {tier:tier, tag:tag, source:'explicit'};
+    setDay(i, tier, tagStr ? tagStr.split(',') : []);
   }
   saveCheckins(data);
 }
@@ -866,7 +879,7 @@ function renderHomeWidgets(){
   const tally = tagTallyFrom(entries);
 
   const cosSlot = document.getElementById('cosSlot');
-  const cosHeader = '<div class="cos-k"><span class="cos-av"></span>Chief of staff</div><div class="cos-caption">Based on what you log &mdash; the more you tap, the sharper this gets.</div>';
+  const cosHeader = '<div class="cos-k"><span class="cos-av"></span>Chief of staff</div><div class="cos-caption">The more you log, the more personalized your COS gets.</div>';
   if(daysTracked < 3){
     cosSlot.innerHTML = '';
   } else if(tally.length === 0){
