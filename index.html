@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<!-- 07-20-25 v7, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
+<!-- 07-20-25 v8, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
 <!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
 <!-- Swipe-to-delete rebuilt with real touch events (was pointer-events-only, which tested fine via simulated mouse but never actually exercised the touch code path a real phone uses). Today's unified body text bumped 13.5px -> 16px across COS/caption/inbox/braindump/task-row text; header bumped 16->18 to keep hierarchy above it. -->
+<!-- v7 — swipe direction fixed to right-to-left (standard delete convention), delete animation + desktop mouse fallback updated to match -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -94,18 +95,18 @@
   .day-hero .t{font-family:var(--serif);font-size:22px;font-weight:600;margin-top:2px;}
   .day-hero .t b{color:var(--now-1);font-weight:600;}
 
-  .braindump{background:var(--cloud);border:2px solid #1a1a1a;border-radius:18px;padding:14px 14px 12px;margin:14px 0;box-shadow:0 10px 24px -18px rgba(43,42,61,.4);}
+  .braindump{background:var(--cloud);border:2px solid #1a1a1a;border-radius:18px;padding:22px 16px 20px;margin:14px 0;box-shadow:0 10px 24px -18px rgba(43,42,61,.4);}
   .bd-top{display:flex;align-items:flex-start;gap:10px;}
   .bd-plus{width:26px;height:26px;border-radius:50%;background:var(--lav);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none;font-size:15px;line-height:1;}
-  .bd-input{flex:1;font-size:16px;font-weight:500;outline:none;min-height:22px;color:var(--ink);line-height:1.4;}
-  .bd-input.empty::before{content:"Braindump anything on your mind\2026";color:var(--ink-soft);font-weight:500;font-size:16px;}
-  .bd-hint{font-size:14px;color:var(--ink-soft);margin-top:8px;}
+  .bd-input{flex:1;font-size:16px;font-weight:700;outline:none;min-height:22px;color:var(--ink);line-height:1.4;}
+  .bd-input.empty::before{content:"Braindump anything on your mind\2026";color:var(--ink-soft);font-weight:700;font-size:16px;}
+  .bd-hint{font-size:14px;font-weight:600;color:var(--ink-soft);margin-top:8px;}
   .bd-chips{margin-top:8px;}
-  .bd-chip{display:inline-block;font-size:11px;font-weight:600;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:5px 11px;margin:0 5px 5px 0;color:var(--ink-soft);cursor:pointer;}
+  .bd-chip{display:inline-block;font-size:13px;font-weight:600;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:6px 12px;margin:0 5px 5px 0;color:var(--ink-soft);cursor:pointer;}
 
   .inbox-card{background:var(--cloud);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:0 10px 24px -18px rgba(43,42,61,.4);}
   .inbox-hd{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);}
-  .inbox-hd .t2{font-size:12.5px;font-weight:700;}
+  .inbox-hd .t2{font-size:16px;font-weight:700;}
   .inbox-hd .cnt{font-size:11px;color:var(--ink-soft);font-weight:700;}
   .inbox-sortbtn{margin-left:auto;background:var(--lav);color:#fff;border:none;border-radius:10px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer;}
   .inbox-row{padding:10px 14px;border-bottom:1px dashed var(--line);font-size:16px;display:flex;align-items:center;gap:8px;}
@@ -113,7 +114,7 @@
   .inbox-row .ir-dot{width:6px;height:6px;border-radius:50%;background:var(--ink-soft);flex:none;}
   .inbox-row .ir-txt{flex:1;min-width:120px;}
   .ir-guess{margin-left:auto;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:7px;flex:none;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);}
-  .inbox-empty{padding:16px 14px;text-align:center;color:var(--ink-soft);font-size:12px;}
+  .inbox-empty{padding:16px 14px;text-align:center;color:var(--ink-soft);font-size:14px;font-weight:600;}
 
   /* "When is this?" sort prompt — one item at a time, matches the real Semester flow */
   .when-wrap{position:absolute;inset:0;background:rgba(43,42,61,.42);display:none;align-items:flex-end;z-index:55;border-radius:40px;overflow:hidden;}
@@ -128,6 +129,14 @@
   .when-btn{background:var(--lav-wash);border:1.5px solid #dcd9fb;color:#5f4bb3;font-weight:800;font-size:13px;padding:13px 0;border-radius:12px;cursor:pointer;}
   .when-btn.skip{background:transparent;border-color:var(--line);color:var(--ink-soft);}
   .when-date{display:none;margin-top:10px;width:100%;height:42px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;font-size:13px;font-family:var(--sans);}
+
+  .edit-field-label{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px;}
+  .edit-field-label:first-of-type{margin-top:4px;}
+  .edit-text{width:100%;min-height:44px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;font-family:var(--sans);font-weight:600;color:var(--ink);resize:none;}
+  .edit-time, .edit-date-input{width:100%;height:44px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;font-size:14px;font-family:var(--sans);}
+  .edit-btns{display:flex;gap:8px;margin-top:20px;}
+  .edit-save{flex:1;background:var(--lav);color:#fff;border:none;font-weight:800;font-size:14px;padding:14px 0;border-radius:12px;cursor:pointer;}
+  .edit-cancel{flex:1;background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);font-weight:700;font-size:14px;padding:14px 0;border-radius:12px;cursor:pointer;}
 
   .arow{display:flex;gap:12px;padding:10px 2px;border-bottom:1px dashed var(--line);align-items:flex-start;touch-action:pan-y;}
   .arow:last-child{border-bottom:none;}
@@ -210,7 +219,7 @@
   .prep-switch button{flex:1;border:none;background:none;font-size:12px;font-weight:700;color:var(--ink-soft);padding:8px 4px;border-radius:11px;cursor:pointer;}
   .prep-switch button.on{background:var(--cloud);color:var(--ink);box-shadow:0 4px 12px -6px rgba(43,42,61,.4);}
   .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:8px;}
-  .cos-caption{font-size:16px;color:rgba(255,255,255,.8);margin:-2px 0 10px;line-height:1.4;}
+  .cos-caption{font-size:16px;font-weight:600;color:rgba(255,255,255,.85);margin:-2px 0 10px;line-height:1.4;}
   .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:#fff;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.35);}
   .cos-card p{font-size:16px;line-height:1.55;color:#fff;margin-bottom:0;}
   .cos-inline-link{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:2px;cursor:pointer;}
@@ -633,6 +642,22 @@
               <button class="when-btn skip" onclick="fileWhen('skip')">Skip &mdash; keep in inbox</button>
             </div>
             <input type="date" class="when-date" id="whenDateInput">
+          </div>
+        </div>
+
+        <div class="when-wrap" id="editWrap">
+          <div class="when-sheet">
+            <div class="when-hd"><span class="cnm">Edit</span><button class="x" onclick="closeEditTask()">&times;</button></div>
+            <div class="edit-field-label">What</div>
+            <textarea class="edit-text" id="editTextInput" rows="2"></textarea>
+            <div class="edit-field-label">Time (optional)</div>
+            <input type="time" class="edit-time" id="editTimeInput">
+            <div class="edit-field-label" id="editDateLabel" style="display:none;">Date</div>
+            <input type="date" class="edit-date-input" id="editDateInput" style="display:none;">
+            <div class="edit-btns">
+              <button class="edit-cancel" onclick="closeEditTask()">Cancel</button>
+              <button class="edit-save" onclick="saveEditTask()">Save</button>
+            </div>
           </div>
         </div>
 
@@ -1353,6 +1378,48 @@ function toggleTaskDone(taskId){
   saveTasks(tasks);
   renderToday();
 }
+let editingTaskId = null;
+function openEditTask(taskId, allowDateEdit){
+  const tasks = loadTasks();
+  const t = tasks.find(x=>x.id===taskId);
+  if(!t) return;
+  editingTaskId = taskId;
+  document.getElementById('editTextInput').value = t.text;
+  document.getElementById('editTimeInput').value = t.time || '';
+  const dateLabel = document.getElementById('editDateLabel');
+  const dateInput = document.getElementById('editDateInput');
+  if(allowDateEdit){
+    dateLabel.style.display = 'block';
+    dateInput.style.display = 'block';
+    dateInput.value = t.date || '';
+  } else {
+    dateLabel.style.display = 'none';
+    dateInput.style.display = 'none';
+  }
+  document.getElementById('editWrap').classList.add('on');
+}
+function closeEditTask(){
+  editingTaskId = null;
+  document.getElementById('editWrap').classList.remove('on');
+}
+function saveEditTask(){
+  if(!editingTaskId) return;
+  const tasks = loadTasks();
+  const t = tasks.find(x=>x.id===editingTaskId);
+  if(!t){ closeEditTask(); return; }
+  const newText = document.getElementById('editTextInput').value.trim();
+  if(newText) t.text = newText;
+  const newTime = document.getElementById('editTimeInput').value;
+  t.time = newTime || null;
+  const dateInput = document.getElementById('editDateInput');
+  if(dateInput.style.display !== 'none' && dateInput.value){
+    t.date = dateInput.value;
+  }
+  saveTasks(tasks);
+  closeEditTask();
+  renderToday();
+  renderUpcoming();
+}
 function deleteTask(taskId){
   const tasks = loadTasks().filter(t=>t.id!==taskId);
   saveTasks(tasks);
@@ -1379,7 +1446,7 @@ runDailyRollover();
 
 const TYPE_ICON = {errand:'&#128722;', reminder:'&#128222;', appointment:'&#128197;', note:'&#128221;'};
 
-function enableSwipeDelete(container, rowSelector){
+function enableSwipeDelete(container, rowSelector, allowDateEdit){
   container.querySelectorAll(rowSelector).forEach(el=>{
     const doDelete = ()=>{
       const id = el.dataset.taskid;
@@ -1389,10 +1456,12 @@ function enableSwipeDelete(container, rowSelector){
       setTimeout(()=>{ deleteTask(id); }, 200);
     };
     const reset = ()=>{ el.style.transform = ''; };
+    const openEdit = ()=>{ openEditTask(el.dataset.taskid, allowDateEdit); };
 
     /* Real phones: touch events. Direction is decided within the first ~8px
        of movement — only once it's clearly horizontal do we preventDefault
-       and claim the gesture, so a normal vertical scroll is never blocked. */
+       and claim the gesture, so a normal vertical scroll is never blocked.
+       A tap that never moved past that threshold opens the edit sheet. */
     let startX=0, startY=0, dx=0, tracking=false, decided=null;
     el.addEventListener('touchstart', e=>{
       if(e.target.closest('.dr-check')) return;
@@ -1415,29 +1484,34 @@ function enableSwipeDelete(container, rowSelector){
     el.addEventListener('touchend', ()=>{
       if(!tracking) return;
       tracking = false;
-      if(decided==='h' && dx<-60) doDelete(); else reset();
+      if(decided==='h' && dx<-60) doDelete();
+      else if(decided===null) openEdit();
+      else reset();
       decided = null;
     });
     el.addEventListener('touchcancel', ()=>{ tracking=false; decided=null; reset(); });
 
     /* Desktop: mouse-driven pointer events, for testing in a regular browser.
        Real touch interactions are handled above instead, to avoid double-firing. */
-    let sx=0, dragging=false;
+    let sx=0, sy=0, dragging=false, moved=false;
     el.addEventListener('pointerdown', e=>{
       if(e.pointerType==='touch') return;
       if(e.target.closest('.dr-check')) return;
-      sx=e.clientX; dragging=true; try{el.setPointerCapture(e.pointerId);}catch(err){}
+      sx=e.clientX; sy=e.clientY; dragging=true; moved=false; try{el.setPointerCapture(e.pointerId);}catch(err){}
     });
     el.addEventListener('pointermove', e=>{
       if(e.pointerType==='touch' || !dragging) return;
       const d = e.clientX - sx;
+      if(Math.abs(d)>8 || Math.abs(e.clientY-sy)>8) moved = true;
       if(d<-8) el.style.transform = 'translateX('+Math.max(d,-90)+'px)';
     });
     el.addEventListener('pointerup', e=>{
       if(e.pointerType==='touch' || !dragging) return;
       dragging = false;
       const d = e.clientX - sx;
-      if(d<-60) doDelete(); else reset();
+      if(d<-60) doDelete();
+      else if(!moved) openEdit();
+      else reset();
     });
     el.addEventListener('pointercancel', ()=>{ dragging=false; reset(); });
     el.addEventListener('pointerleave', ()=>{ if(dragging){ dragging=false; reset(); } });
@@ -1502,7 +1576,7 @@ function renderToday(){
       + '<div class="today-tasks-sub">&mdash; toggle down to start your day!</div>'
       + '<div class="today-tasks-body'+(todayActionsOpen?' open':'')+'" id="todayTasksBody">'+rowsHtml+'</div>';
   }
-  enableSwipeDelete(taskWrap, '.dayrow');
+  enableSwipeDelete(taskWrap, '.dayrow', false);
 
   // COS synthesis: chain the first two undone, time-ordered tasks for today (overdue first)
   const active = overdue.concat(dueToday);
@@ -1604,7 +1678,7 @@ function renderUpcoming(){
       + '<div class="ar-meta"><span class="ar-dot '+t.type+'"></span>'+t.type.charAt(0).toUpperCase()+t.type.slice(1)+'</div></div></div>';
   });
   listEl.innerHTML = html;
-  enableSwipeDelete(listEl, '.arow');
+  enableSwipeDelete(listEl, '.arow', true);
 }
 
 renderToday();
