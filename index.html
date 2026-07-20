@@ -3,6 +3,7 @@
 <!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
 <!-- Swipe-to-delete rebuilt with real touch events (was pointer-events-only, which tested fine via simulated mouse but never actually exercised the touch code path a real phone uses). Today's unified body text bumped 13.5px -> 16px across COS/caption/inbox/braindump/task-row text; header bumped 16->18 to keep hierarchy above it. -->
 <!-- v7 — swipe direction fixed to right-to-left (standard delete convention), delete animation + desktop mouse fallback updated to match -->
+<!-- v8 — weight/contrast pass on Today (braindump box taller, placeholder/hint/chips/inbox label/inbox-empty/cos-caption all bumped in size and/or weight, several had been missed in the earlier size-only pass). Tap-to-edit built: tap any task row to edit text + time everywhere, plus date on Upcoming only (not Today, to protect the overdue-carryover system) — tap detection shares the same gesture handler as swipe-to-delete so they don't conflict. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -221,7 +222,7 @@
   .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:8px;}
   .cos-caption{font-size:16px;font-weight:600;color:rgba(255,255,255,.85);margin:-2px 0 10px;line-height:1.4;}
   .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:#fff;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.35);}
-  .cos-card p{font-size:16px;line-height:1.55;color:#fff;margin-bottom:0;}
+  .cos-card p{font-size:18px;font-weight:700;line-height:1.5;color:#fff;margin-bottom:0;}
   .cos-inline-link{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:2px;cursor:pointer;}
 
   .tally-card{background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:16px 18px;margin-bottom:16px;}
@@ -470,7 +471,7 @@
                 <span class="bd-plus">+</span>
                 <div class="bd-input empty" id="bdInput" contenteditable="true"></div>
               </div>
-              <div class="bd-hint">Type a todo and hit 'enter' &mdash; it drops in your inbox to sort.</div>
+              <div class="bd-hint">Type anyting and hit enter &mdash; it drops in your inbox to sort.</div>
               <div class="bd-chips">
                 <span class="bd-chip" data-txt="call pediatrician back">call pediatrician back</span>
                 <span class="bd-chip" data-txt="pack swim bag for tomorrow">pack swim bag tomorrow</span>
