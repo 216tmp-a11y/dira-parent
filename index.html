@@ -84,6 +84,123 @@
   .ck-chip.maxed{opacity:.4;}
 
   .cos-card{background:linear-gradient(135deg,#4a3a80,#5f4bb3);border:1px solid rgba(0,0,0,.08);border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 14px 30px -18px rgba(74,58,128,.55);}
+
+  /* ===== Today tab ===== */
+  .day-hero{padding:4px 2px 6px;}
+  .day-hero .k{font-size:12px;color:var(--ink-soft);font-weight:700;}
+  .day-hero .t{font-family:var(--serif);font-size:22px;font-weight:600;margin-top:2px;}
+  .day-hero .t b{color:var(--now-1);font-weight:600;}
+
+  .braindump{background:var(--cloud);border:1.5px solid var(--lav-wash);border-radius:18px;padding:14px 14px 12px;margin:14px 0;box-shadow:0 10px 24px -18px rgba(43,42,61,.4);}
+  .bd-top{display:flex;align-items:flex-start;gap:10px;}
+  .bd-plus{width:26px;height:26px;border-radius:50%;background:var(--lav);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none;font-size:15px;line-height:1;}
+  .bd-input{flex:1;font-size:13.5px;font-weight:500;outline:none;min-height:22px;color:var(--ink);line-height:1.4;}
+  .bd-input.empty::before{content:"Braindump anything on your mind\2026";color:var(--ink-soft);}
+  .bd-hint{font-size:10.5px;color:var(--ink-soft);margin-top:8px;}
+  .bd-chips{margin-top:8px;}
+  .bd-chip{display:inline-block;font-size:11px;font-weight:600;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:5px 11px;margin:0 5px 5px 0;color:var(--ink-soft);cursor:pointer;}
+
+  .inbox-card{background:var(--cloud);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:0 10px 24px -18px rgba(43,42,61,.4);}
+  .inbox-hd{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);}
+  .inbox-hd .t2{font-size:12.5px;font-weight:700;}
+  .inbox-hd .cnt{font-size:11px;color:var(--ink-soft);font-weight:700;}
+  .inbox-sortbtn{margin-left:auto;background:var(--lav);color:#fff;border:none;border-radius:10px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer;}
+  .inbox-row{padding:10px 14px;border-bottom:1px dashed var(--line);font-size:12.5px;display:flex;align-items:center;gap:8px;}
+  .inbox-row:last-child{border-bottom:none;}
+  .inbox-row .ir-dot{width:6px;height:6px;border-radius:50%;background:var(--ink-soft);flex:none;}
+  .inbox-row .ir-txt{flex:1;min-width:120px;}
+  .ir-guess{margin-left:auto;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:7px;flex:none;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);}
+  .inbox-empty{padding:16px 14px;text-align:center;color:var(--ink-soft);font-size:12px;}
+
+  /* "When is this?" sort prompt — one item at a time, matches the real Semester flow */
+  .when-wrap{position:absolute;inset:0;background:rgba(43,42,61,.42);display:none;align-items:flex-end;z-index:55;border-radius:40px;overflow:hidden;}
+  .when-wrap.on{display:flex;}
+  .when-sheet{width:100%;background:var(--cloud);border-radius:28px 28px 0 0;padding:10px 24px 30px;box-shadow:0 -20px 50px -20px rgba(43,42,61,.5);}
+  .when-hd{display:flex;align-items:center;margin-bottom:6px;}
+  .when-hd .cnm{font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;}
+  .when-hd .x{margin-left:auto;width:26px;height:26px;border-radius:8px;border:1px solid var(--line);background:var(--paper);font-size:14px;cursor:pointer;color:var(--ink-soft);}
+  .when-item{font-family:var(--serif);font-size:19px;font-weight:600;margin:8px 0 4px;}
+  .when-hint{font-size:11.5px;color:var(--ink-soft);margin-bottom:16px;}
+  .when-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .when-btn{background:var(--lav-wash);border:1.5px solid #dcd9fb;color:#5f4bb3;font-weight:800;font-size:13px;padding:13px 0;border-radius:12px;cursor:pointer;}
+  .when-btn.skip{background:transparent;border-color:var(--line);color:var(--ink-soft);}
+  .when-date{display:none;margin-top:10px;width:100%;height:42px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;font-size:13px;font-family:var(--sans);}
+
+  .arow{display:flex;gap:12px;padding:10px 2px;border-bottom:1px dashed var(--line);align-items:flex-start;touch-action:pan-y;}
+  .arow:last-child{border-bottom:none;}
+  .arow.done{opacity:.5;}
+  .arow.done .ar-txt{text-decoration:line-through;}
+  .arow .ar-time{font-family:"SF Mono",Menlo,monospace;font-size:11px;font-weight:700;color:var(--ink-soft);width:40px;flex:none;padding-top:2px;}
+  .arow .ar-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;margin-top:1px;}
+  .arow.done .ar-check{background:var(--later-1);border-color:var(--later-1);}
+  .arow .ar-body{flex:1;min-width:0;}
+  .arow .ar-txt{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.35;}
+  .arow .ar-meta{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-soft);margin-top:3px;}
+  .arow .ar-dot{width:7px;height:7px;border-radius:50%;flex:none;}
+  .ar-dot.errand{background:#c89a2a;}
+  .ar-dot.reminder{background:#3b82c4;}
+  .ar-dot.appointment{background:var(--later-1);}
+  .ar-dot.note{background:var(--lav);}
+
+  /* Today's task list: boxed, color-coded by type — matches Semester's real .dayrow */
+  .dayrow{display:flex;align-items:center;gap:11px;background:var(--cloud);border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin-bottom:8px;box-shadow:0 8px 20px -18px rgba(43,42,61,.4);touch-action:pan-y;}
+  .dayrow.src-errand{background:#fdf3dc;border-color:#ecd9a8;}
+  .dayrow.src-reminder{background:#e2eefa;border-color:#c3ddf2;}
+  .dayrow.src-appointment{background:var(--later-wash);border-color:#c7e2d8;}
+  .dayrow.src-note{background:var(--lav-wash);border-color:#d9d0f2;}
+  .dayrow.overdue{background:#fdeeee;border-color:#f6d3d3;}
+  .dayrow.done{opacity:.55;}
+  .dayrow.done .dr-txt{text-decoration:line-through;}
+  .dayrow .dr-time{font-family:"SF Mono",Menlo,monospace;font-size:10.5px;font-weight:700;color:var(--ink-soft);width:36px;flex:none;text-align:center;}
+  .dayrow .dr-check{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(43,42,61,.25);background:#fff;flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;}
+  .dayrow .dr-check.on{background:var(--later-1);border-color:var(--later-1);}
+  .dayrow .dr-txt{flex:1;font-size:13.5px;font-weight:700;color:var(--ink);min-width:0;}
+  .dayrow .dr-pill{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:99px;flex:none;background:rgba(255,255,255,.65);color:var(--ink-soft);}
+  .dayrow.overdue .dr-pill{background:#e8a5a5;color:#7a2020;}
+  .overdue-hd{font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#c1443f;padding:4px 2px 6px;}
+
+  /* legacy card style, still used nowhere currently but kept for reference */
+  .taskrow{display:flex;align-items:center;gap:11px;background:var(--cloud);border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin-bottom:8px;box-shadow:0 8px 20px -18px rgba(43,42,61,.4);}
+  .taskrow.done{opacity:.5;}
+  .taskrow.done .tk-txt{text-decoration:line-through;}
+  .taskrow .tk-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;}
+  .taskrow.done .tk-check{background:var(--later-1);border-color:var(--later-1);}
+  .taskrow .tk-time{font-family:var(--serif);font-size:11px;font-weight:600;color:var(--ink-soft);width:38px;flex:none;}
+  .taskrow .tk-txt{flex:1;font-size:13px;font-weight:600;min-width:0;}
+  .tk-pill{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:4px 8px;border-radius:8px;flex:none;}
+  .tk-pill.errand{background:var(--gold-soft,#fdf3dc);background:#fdf3dc;color:#8a6a1a;}
+  .tk-pill.reminder{background:#e2eefa;color:#2a6ca8;}
+  .tk-pill.appointment{background:var(--later-wash);color:#3d6b5f;}
+  .tk-pill.note{background:var(--lav-wash);color:#5f4bb3;}
+  .today-tasks-head{font-size:12px;font-weight:700;color:var(--ink-soft);padding:10px 0 4px;}
+
+  /* ===== Upcoming tab ===== */
+  .gcal-banner{display:flex;align-items:center;gap:10px;background:#fdf3dc;border:1px solid #ecd9a8;border-radius:14px;padding:11px 13px;margin-bottom:14px;cursor:pointer;}
+  .gcal-banner.on{background:var(--later-wash);border-color:#b9e5dd;}
+  .gcal-banner .ic{font-size:17px;flex:none;}
+  .gcal-banner .tx{flex:1;min-width:0;}
+  .gcal-banner .tx b{font-size:12px;font-weight:800;color:#8a6a12;display:block;}
+  .gcal-banner.on .tx b{color:#0c7a6d;}
+  .gcal-banner .tx small{font-size:10.5px;color:#a06f24;}
+  .gcal-banner.on .tx small{color:#0c7a6d;}
+  .gcal-banner .go{font-size:11px;font-weight:800;background:#b4741c;color:#fff;border:0;border-radius:8px;padding:7px 11px;flex:none;}
+  .gcal-banner.on .go{display:none;}
+
+  .up-month-card{background:var(--cloud);border:1px solid var(--line);border-radius:18px;padding:14px 12px;margin-bottom:16px;}
+  .up-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+  .up-dow span{text-align:center;font-size:10px;color:var(--ink-soft);}
+  .up-row{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
+  .up-cell{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink);position:relative;}
+  .up-cell.dim{color:#d8d5c9;}
+  .up-cell.today{background:var(--now-wash);color:#c8542f;}
+  .up-cell .up-pip{width:4px;height:4px;border-radius:50%;background:var(--lav);position:absolute;bottom:5px;}
+
+  .up-daylabel{font-size:11px;font-weight:700;color:var(--ink-soft);margin:16px 2px 8px;}
+
+  /* ===== Prepare pill switcher ===== */
+  .prep-switch{display:flex;gap:6px;margin-bottom:16px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:4px;}
+  .prep-switch button{flex:1;border:none;background:none;font-size:12px;font-weight:700;color:var(--ink-soft);padding:8px 4px;border-radius:11px;cursor:pointer;}
+  .prep-switch button.on{background:var(--cloud);color:var(--ink);box-shadow:0 4px 12px -6px rgba(43,42,61,.4);}
   .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:8px;}
   .cos-caption{font-size:11px;color:rgba(255,255,255,.72);margin:-4px 0 10px;line-height:1.4;}
   .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:#fff;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.35);}
@@ -312,14 +429,73 @@
           <span class="dots"><span></span><span></span><span></span>&nbsp;<span class="batt"></span></span>
         </div>
 
-        <div class="tier-status" id="tierStatus">
+        <div class="tier-status" id="tierStatus" style="display:none;">
           <span class="dot"></span><span id="tierStatusText">Free · Situations + Library · Deeper journeys locked</span>
         </div>
 
         <div class="viewport" id="viewport">
 
-          <!-- ============ HOME ============ -->
-          <section class="view active" id="home">
+          <!-- ============ TODAY ============ -->
+          <section class="view active" id="today">
+            <div class="day-hero">
+              <div class="k" id="todayGreeting">Good morning</div>
+              <div class="t" id="todayDate">Loading&hellip;</div>
+            </div>
+
+            <div class="cos-card">
+              <div class="cos-k"><span class="cos-av"></span>Chief of staff</div>
+              <div class="cos-caption">Built from what's on your list today.</div>
+              <p id="todayCosText">Nothing on the list yet &mdash; braindump anything on your mind below.</p>
+            </div>
+
+            <div class="braindump">
+              <div class="bd-top">
+                <span class="bd-plus">+</span>
+                <div class="bd-input empty" id="bdInput" contenteditable="true"></div>
+              </div>
+              <div class="bd-hint">Jot anything &mdash; it drops in your inbox to sort.</div>
+              <div class="bd-chips">
+                <span class="bd-chip" data-txt="return the library books">return library books</span>
+                <span class="bd-chip" data-txt="call pediatrician back">call pediatrician back</span>
+                <span class="bd-chip" data-txt="pack swim bag for tomorrow">pack swim bag tomorrow</span>
+              </div>
+            </div>
+
+            <div class="inbox-card">
+              <div class="inbox-hd"><span class="t2">Inbox</span><span class="cnt" id="inboxCnt">0</span><button class="inbox-sortbtn" id="sortBtn">Sort</button></div>
+              <div id="inboxList"></div>
+            </div>
+
+            <div id="todayTasks"></div>
+          </section>
+
+          <!-- ============ UPCOMING ============ -->
+          <section class="view" id="upcoming">
+            <div class="topbar"><span class="eyebrow">Upcoming</span></div>
+            <h3 class="h-title">This month</h3>
+            <p class="h-sub">Everything you've dated, plus anything synced from your calendar.</p>
+
+            <div class="gcal-banner" id="gcalBanner" onclick="toggleGcal()">
+              <span class="ic">&#128197;</span>
+              <div class="tx"><b id="gcalTitle">Connect Google Calendar</b><small id="gcalSub">Sync your real calendar both ways</small></div>
+              <button class="go" id="gcalGo">Connect</button>
+            </div>
+
+            <div class="up-month-card">
+              <div class="month-head">
+                <button class="month-nav" id="upBack" onclick="upcomingMonthOffset--;renderUpcoming()">&larr;</button>
+                <span class="month-title" id="upMonthTitle">Loading&hellip;</span>
+                <button class="month-nav" id="upFwd" onclick="upcomingMonthOffset++;renderUpcoming()">&rarr;</button>
+              </div>
+              <div class="up-dow" id="upDow"></div>
+              <div id="upGrid"></div>
+            </div>
+
+            <div id="upcomingList"></div>
+          </section>
+
+          <!-- ============ CHECK IN (was Home) ============ -->
+          <section class="view" id="home">
             <div class="home-hero">
               <div class="home-hi">Hi. You're here &mdash; that already counts.</div>
               <h2>How's today going?</h2>
@@ -344,9 +520,10 @@
             <div class="sos-link" onclick="go('crisis')"><span class="sos-ic">SOS</span>In crisis or worried about safety? Get help now</div>
           </section>
 
-          <!-- ============ SITUATIONS: picker ============ -->
+          <!-- ============ SITUATIONS: picker (Prepare) ============ -->
           <section class="view" id="situations-list">
-            <div class="topbar"><button class="back" onclick="go('home')">&larr;</button><span class="eyebrow">Situations</span></div>
+            <div class="topbar"><span class="eyebrow">Prepare</span></div>
+            <div class="prep-switch"><button class="on" onclick="go('situations-list')">Situations</button><button onclick="go('month')">Your month</button><button onclick="go('library')">Library</button></div>
             <h3 class="h-title">What's going on?</h3>
             <p class="h-sub">Tap whatever feels closest, then choose a quick script for right now, or the fuller picture for when you're calmer.</p>
             <div id="situationsTiles"></div>
@@ -358,13 +535,14 @@
 
           <!-- ============ YOUR MONTH ============ -->
           <section class="view" id="month">
-            <div class="topbar"><button class="back" onclick="go('home')">&larr;</button><span class="eyebrow">Your month</span></div>
+            <div class="topbar"><span class="eyebrow">Prepare</span></div>
+            <div class="prep-switch"><button onclick="go('situations-list')">Situations</button><button class="on" onclick="go('month')">Your month</button><button onclick="go('library')">Library</button></div>
             <div id="monthContent"></div>
           </section>
 
           <!-- ============ GET HELP NOW ============ -->
           <section class="view" id="crisis">
-            <div class="topbar"><button class="back" onclick="go('home')">&larr;</button><span class="eyebrow">Get help now</span></div>
+            <div class="topbar"><button class="back" onclick="go('today')">&larr;</button><span class="eyebrow">Get help now</span></div>
             <h3 class="h-title">You don't have to handle this alone</h3>
             <p class="crisis-lede">If you or your child is in danger, or you're having thoughts of hurting yourself or your child, please reach out right now. These lines are free, confidential, and open 24/7.</p>
 
@@ -390,7 +568,8 @@
 
           <!-- ============ LIBRARY ============ -->
           <section class="view" id="library">
-            <div class="topbar"><button class="back" onclick="go('home')">&larr;</button><span class="eyebrow">SEL Resource Hub</span></div>
+            <div class="topbar"><span class="eyebrow">Prepare</span></div>
+            <div class="prep-switch"><button onclick="go('situations-list')">Situations</button><button onclick="go('month')">Your month</button><button class="on" onclick="go('library')">Library</button></div>
             <h3 class="h-title">A shelf worth keeping</h3>
             <p class="h-sub">Every resource in the Dira library, re-framed for parents. 8 shared.</p>
             <div class="pill-row">
@@ -413,10 +592,10 @@
         </div>
 
         <nav class="tabbar" id="tabbar">
-          <button class="active" data-tab="home" onclick="go('home')"><span class="ti">&#127968;</span>Home</button>
-          <button data-tab="situations" onclick="go('situations-list')"><span class="ti">&#127796;</span>Situations</button>
-          <button data-tab="month" onclick="go('month')"><span class="ti">&#128197;</span>Your month</button>
-          <button data-tab="library" onclick="go('library')"><span class="ti">&#128218;</span>Library</button>
+          <button class="active" data-tab="today" onclick="go('today')"><span class="ti">&#128203;</span>Today</button>
+          <button data-tab="upcoming" onclick="go('upcoming')"><span class="ti">&#128197;</span>Upcoming</button>
+          <button data-tab="home" onclick="go('home')"><span class="ti">&#9989;</span>Check In</button>
+          <button data-tab="situations" onclick="go('situations-list')"><span class="ti">&#127793;</span>Prepare</button>
         </nav>
 
         <div class="install-banner" id="installBanner">
@@ -432,6 +611,21 @@
             <span class="demo-tag">DEMO</span>
             <button class="free-b on" onclick="setTier('free')">Free</button>
             <button class="paid-b" onclick="setTier('paid')">Plus</button>
+          </div>
+        </div>
+
+        <div class="when-wrap" id="whenWrap">
+          <div class="when-sheet">
+            <div class="when-hd"><span class="cnm">When is this?</span><button class="x" onclick="closeWhen()">&times;</button></div>
+            <div class="when-item" id="whenItemText">&nbsp;</div>
+            <div class="when-hint">Give it a day and it files itself. Skip and it waits in your inbox.</div>
+            <div class="when-btns">
+              <button class="when-btn" onclick="fileWhen('today')">Today</button>
+              <button class="when-btn" onclick="fileWhen('tomorrow')">Tomorrow</button>
+              <button class="when-btn" onclick="fileWhen('pick')">Pick a date</button>
+              <button class="when-btn skip" onclick="fileWhen('skip')">Skip &mdash; keep in inbox</button>
+            </div>
+            <input type="date" class="when-date" id="whenDateInput">
           </div>
         </div>
 
@@ -663,18 +857,21 @@ function preparePageHTML(s){
 document.getElementById('situationPages').innerHTML = SITUATIONS.map(s=>landingHTML(s)+nowPageHTML(s)+preparePageHTML(s)).join('');
 
 /* ================= NAV ================= */
-const tabFor = {'home':'home','situations-list':'situations','month':'month','library':'library'};
+const tabFor = {'today':'today','upcoming':'upcoming','home':'home','situations-list':'situations','month':'situations','library':'situations'};
 SITUATIONS.forEach(s=>{ tabFor['sit-'+s.id]='situations'; tabFor['sit-'+s.id+'-now']='situations'; tabFor['sit-'+s.id+'-prepare']='situations'; });
 
 function go(id){
-  if(!document.getElementById(id)) id = 'home';
+  if(!document.getElementById(id)) id = 'today';
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.getElementById('viewport').scrollTop = 0;
   const tab = tabFor[id] || '';
   document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.getElementById('tierStatus').style.display = (id==='today'||id==='upcoming') ? 'none' : 'flex';
   if(id==='month') renderMonth();
   if(id==='home') renderHomeWidgets();
+  if(id==='today') renderToday();
+  if(id==='upcoming') renderUpcoming();
 }
 function openVisit(id, which){
   recordVisit(id);
@@ -879,7 +1076,7 @@ function renderHomeWidgets(){
   const tally = tagTallyFrom(entries);
 
   const cosSlot = document.getElementById('cosSlot');
-  const cosHeader = '<div class="cos-k"><span class="cos-av"></span>Chief of staff</div><div class="cos-caption">The more you log, the more personalized your COS gets.</div>';
+  const cosHeader = '<div class="cos-k"><span class="cos-av"></span>Dira noticed</div><div class="cos-caption">The more you log, the more personalized this gets.</div>';
   if(daysTracked < 3){
     cosSlot.innerHTML = '';
   } else if(tally.length === 0){
@@ -914,6 +1111,7 @@ function renderHomeWidgets(){
 
 /* ================= YOUR MONTH ================= */
 let monthOffset = 0;
+let upcomingMonthOffset = 0;
 function renderMonth(){
   const data = purgeOld();
   const dates = Object.keys(data).sort();
@@ -1001,6 +1199,363 @@ function exportCSV(){
 
 renderCheckinState();
 renderHomeWidgets();
+
+/* ================= TODAY / UPCOMING: task capture & planning ================= */
+const TASK_KEY = 'dira_tasks_v1';
+const GCAL_KEY = 'dira_gcal_connected';
+const DOW_NAMES = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+const DOW_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function loadTasks(){ try{ return JSON.parse(localStorage.getItem(TASK_KEY)||'[]'); }catch(e){ return []; } }
+function saveTasks(arr){ try{ localStorage.setItem(TASK_KEY, JSON.stringify(arr)); }catch(e){} }
+function uid(){ return 't'+Date.now()+Math.floor(Math.random()*1000); }
+
+function classifyType(text){
+  const v = text.toLowerCase();
+  if(/\b(appt|appointment|doctor|dr\.|dentist|pediatrician|checkup|check-up|vet)\b/.test(v)) return 'appointment';
+  if(/\b(buy|pick up|pickup|order|grab|get more|drop off|return)\b/.test(v)) return 'errand';
+  if(/\b(call|email|text|remind|don'?t forget|follow up)\b/.test(v)) return 'reminder';
+  return 'note';
+}
+function classifyDate(text){
+  const v = text.toLowerCase();
+  const today = new Date();
+  if(/\btoday\b/.test(v)) return todayKey();
+  if(/\btomorrow\b/.test(v)){ const d=new Date(today); d.setDate(d.getDate()+1); return todayKey(d); }
+  for(let i=0;i<7;i++){
+    if(new RegExp('\\b'+DOW_NAMES[i]+'\\b').test(v)){
+      const d = new Date(today);
+      let add = (i - d.getDay() + 7) % 7; if(add===0) add=7;
+      d.setDate(d.getDate()+add);
+      return todayKey(d);
+    }
+  }
+  return null;
+}
+
+/* Seed a few believable tasks on first-ever load, same spirit as the check-in
+   seed: only if nothing exists yet, never overwrites real data. */
+function seedTasksIfEmpty(){
+  let existing;
+  try{ existing = localStorage.getItem(TASK_KEY); }catch(e){ return; }
+  if(existing) return;
+  const today = new Date();
+  const tom = new Date(today); tom.setDate(tom.getDate()+1);
+  const seeded = [
+    {id:uid(), text:'Call pediatrician back about the checkup', type:'reminder', date:todayKey(), time:null, done:false},
+    {id:uid(), text:"Pick up diapers", type:'errand', date:todayKey(), time:null, done:false},
+    {id:uid(), text:"Kid's dentist appointment", type:'appointment', date:todayKey(), time:'15:00', done:false},
+    {id:uid(), text:'Pack swim bag for tomorrow', type:'errand', date:todayKey(tom), time:null, done:false},
+    {id:uid(), text:'Order more bedtime nightlight bulbs', type:'errand', date:null, time:null, done:false}
+  ];
+  saveTasks(seeded);
+}
+seedTasksIfEmpty();
+
+/* ---- Braindump capture ---- */
+const bdInput = document.getElementById('bdInput');
+bdInput.addEventListener('input', ()=>{ bdInput.classList.toggle('empty', bdInput.textContent.trim()===''); });
+bdInput.addEventListener('keydown', e=>{
+  if(e.key==='Enter'){
+    e.preventDefault();
+    const v = bdInput.textContent.trim();
+    if(!v) return;
+    captureTask(v);
+    bdInput.textContent = '';
+    bdInput.classList.add('empty');
+  }
+});
+document.querySelectorAll('.bd-chip').forEach(c=>{
+  c.addEventListener('click', ()=> captureTask(c.dataset.txt));
+});
+function captureTask(text){
+  const tasks = loadTasks();
+  tasks.push({id:uid(), text:text, type:classifyType(text), date:null, time:null, done:false});
+  saveTasks(tasks);
+  renderToday();
+}
+
+/* ---- Inbox sort: Sort queues every undated inbox item, one at a time, for
+   "When is this?" — Today / Tomorrow / Pick a date / Skip (stays in inbox).
+   No exceptions by type: nothing leaves the inbox without a date. ---- */
+let whenQueue = [];
+document.getElementById('sortBtn').addEventListener('click', ()=>{
+  const tasks = loadTasks();
+  const pending = tasks.filter(t=>!t.date);
+  if(!pending.length) return;
+  whenQueue = pending.map(t=>t.id);
+  nextWhen();
+});
+function nextWhen(){
+  if(!whenQueue.length){
+    document.getElementById('whenWrap').classList.remove('on');
+    renderToday();
+    return;
+  }
+  const tasks = loadTasks();
+  const t = tasks.find(x=>x.id===whenQueue[0]);
+  if(!t){ whenQueue.shift(); nextWhen(); return; }
+  document.getElementById('whenItemText').textContent = t.text;
+  document.getElementById('whenDateInput').style.display = 'none';
+  document.getElementById('whenWrap').classList.add('on');
+}
+function closeWhen(){
+  document.getElementById('whenWrap').classList.remove('on');
+  whenQueue = [];
+  renderToday();
+}
+function fileWhen(choice){
+  if(choice==='pick'){
+    const inp = document.getElementById('whenDateInput');
+    inp.style.display = 'block';
+    inp.value = '';
+    inp.onchange = ()=>{ if(inp.value) applyWhenDate(inp.value); };
+    inp.focus();
+    return;
+  }
+  if(choice==='skip'){
+    whenQueue.shift();
+    nextWhen();
+    return;
+  }
+  const d = new Date();
+  if(choice==='tomorrow') d.setDate(d.getDate()+1);
+  applyWhenDate(todayKey(d));
+}
+function applyWhenDate(dateStr){
+  const id = whenQueue.shift();
+  const tasks = loadTasks();
+  const t = tasks.find(x=>x.id===id);
+  if(t) t.date = dateStr;
+  saveTasks(tasks);
+  nextWhen();
+}
+function toggleTaskDone(taskId){
+  const tasks = loadTasks();
+  const t = tasks.find(x=>x.id===taskId);
+  if(!t) return;
+  t.done = !t.done;
+  t.doneDate = t.done ? todayKey() : null;
+  saveTasks(tasks);
+  renderToday();
+}
+function deleteTask(taskId){
+  const tasks = loadTasks().filter(t=>t.id!==taskId);
+  saveTasks(tasks);
+  renderToday();
+  renderUpcoming();
+}
+
+/* Runs once per session: if the real-world date has moved on since the app
+   was last open, purge anything that was crossed off on a previous day.
+   Undone items are never purged here — they carry forward as "overdue"
+   instead, shown with a distinct flag rather than silently vanishing. */
+const LASTSEEN_KEY = 'dira_lastseen_date';
+function runDailyRollover(){
+  const today = todayKey();
+  let last;
+  try{ last = localStorage.getItem(LASTSEEN_KEY); }catch(e){ last = null; }
+  if(last !== today){
+    const tasks = loadTasks().filter(t => !(t.done && t.doneDate && t.doneDate < today));
+    saveTasks(tasks);
+    try{ localStorage.setItem(LASTSEEN_KEY, today); }catch(e){}
+  }
+}
+runDailyRollover();
+
+const TYPE_ICON = {errand:'&#128722;', reminder:'&#128222;', appointment:'&#128197;', note:'&#128221;'};
+
+function enableSwipeDelete(container, rowSelector){
+  container.querySelectorAll(rowSelector).forEach(el=>{
+    let sx=0, dragging=false;
+    el.addEventListener('pointerdown', e=>{
+      if(e.target.closest('.dr-check')) return;
+      sx=e.clientX; dragging=true; try{el.setPointerCapture(e.pointerId);}catch(err){}
+    });
+    el.addEventListener('pointermove', e=>{
+      if(!dragging) return;
+      const dx = e.clientX - sx;
+      if(dx > 8) el.style.transform = 'translateX('+Math.min(dx,90)+'px)';
+    });
+    el.addEventListener('pointerup', e=>{
+      if(!dragging) return;
+      dragging = false;
+      const dx = e.clientX - sx;
+      if(dx > 60){
+        const id = el.dataset.taskid;
+        el.style.transition = 'opacity .22s ease, transform .22s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(130px)';
+        setTimeout(()=>{ deleteTask(id); }, 200);
+      } else {
+        el.style.transform = '';
+      }
+    });
+    el.addEventListener('pointercancel', ()=>{ dragging=false; el.style.transform=''; });
+    el.addEventListener('pointerleave', ()=>{ if(dragging){ dragging=false; el.style.transform=''; } });
+  });
+}
+
+function renderToday(){
+  const now = new Date();
+  const hour = now.getHours();
+  document.getElementById('todayGreeting').textContent = hour < 12 ? 'Good morning' : (hour < 17 ? 'Good afternoon' : 'Good evening');
+  document.getElementById('todayDate').innerHTML = DOW_SHORT[now.getDay()]+', <b>'+MONTH_NAMES[now.getMonth()].slice(0,3)+' '+now.getDate()+'</b>';
+
+  const tasks = loadTasks();
+  const key = todayKey();
+  const inbox = tasks.filter(t=>!t.date);
+
+  // Today shows: today's own items, anything overdue and still undone (carried
+  // forward, flagged), and anything crossed off earlier today (stays visible
+  // until the day rolls over, per the "start with crossing off" call).
+  const overdue = tasks.filter(t=>t.date && t.date < key && !t.done);
+  const dueToday = tasks.filter(t=>t.date===key && !t.done);
+  const doneToday = tasks.filter(t=>t.done && t.doneDate===key);
+  const sortByTime = (a,b)=>{ if(a.time && b.time) return a.time.localeCompare(b.time); if(a.time) return -1; if(b.time) return 1; return 0; };
+  overdue.sort(sortByTime); dueToday.sort(sortByTime);
+
+  // Inbox — each row shows its guessed type right away, matching capture-time classification
+  document.getElementById('inboxCnt').textContent = inbox.length;
+  const inboxList = document.getElementById('inboxList');
+  if(inbox.length===0){
+    inboxList.innerHTML = '<div class="inbox-empty">Inbox clear &mdash; braindump anything above.</div>';
+  } else {
+    inboxList.innerHTML = inbox.map(t=>{
+      return '<div class="inbox-row">'
+        + '<span class="ir-dot"></span><span class="ir-txt">'+t.text+'</span>'
+        + '<span class="ir-guess">&rarr; '+t.type+'</span></div>';
+    }).join('');
+  }
+
+  // Today's tasks — boxed, color-coded by type; overdue gets its own flagged section up top
+  const taskWrap = document.getElementById('todayTasks');
+  const total = overdue.length + dueToday.length + doneToday.length;
+  if(total===0){
+    taskWrap.innerHTML = '';
+  } else {
+    const todayLabel = DOW_SHORT[now.getDay()]+', '+MONTH_NAMES[now.getMonth()].slice(0,3)+' '+now.getDate();
+    const row = (t, overdueFlag)=>{
+      const timeLabel = t.time ? formatTime(t.time) : '\u2014';
+      return '<div class="dayrow src-'+t.type+(t.done?' done':'')+(overdueFlag?' overdue':'')+'" data-taskid="'+t.id+'">'
+        + '<span class="dr-time">'+(t.done?'&#10003;':timeLabel)+'</span>'
+        + '<span class="dr-check'+(t.done?' on':'')+'" onclick="toggleTaskDone(\''+t.id+'\')">'+(t.done?'&#10003;':'')+'</span>'
+        + '<span class="dr-txt">'+t.text+'</span>'
+        + '<span class="dr-pill">'+(overdueFlag?'Catch up':t.type)+'</span></div>';
+    };
+    let html = '<div class="today-tasks-head">Today &middot; '+todayLabel+'</div>';
+    if(overdue.length) html += '<div class="overdue-hd">Needs attention &mdash; do first</div>' + overdue.map(t=>row(t,true)).join('');
+    html += dueToday.map(t=>row(t,false)).join('');
+    html += doneToday.map(t=>row(t,false)).join('');
+    taskWrap.innerHTML = html;
+  }
+  enableSwipeDelete(taskWrap, '.dayrow');
+
+  // COS synthesis: chain the first two undone, time-ordered tasks for today (overdue first)
+  const active = overdue.concat(dueToday);
+  const cosEl = document.getElementById('todayCosText');
+  if(active.length===0 && doneToday.length>0){
+    cosEl.textContent = "Everything on today's list is done. Nice.";
+  } else if(active.length===0){
+    cosEl.textContent = 'Nothing on the list yet \u2014 braindump anything on your mind below.';
+  } else if(overdue.length){
+    cosEl.innerHTML = 'Start with <b>'+overdue[0].text+"</b> \u2014 it's slipped past due."+(active.length>1?' Then <b>'+active[1].text+'</b>.':'');
+  } else if(active.length===1){
+    cosEl.innerHTML = "Don't forget: <b>"+active[0].text+"</b>.";
+  } else {
+    cosEl.innerHTML = 'Start with <b>'+active[0].text+'</b>. Then <b>'+active[1].text+'</b>.';
+  }
+}
+function formatTime(t){
+  const [h,m] = t.split(':').map(Number);
+  const ampm = h>=12 ? 'p' : 'a';
+  const h12 = h%12===0 ? 12 : h%12;
+  return h12+(m?':'+String(m).padStart(2,'0'):'')+ampm;
+}
+
+/* ---- Upcoming: fake Google Calendar connect + month grid of tasks ---- */
+function isGcalConnected(){ try{ return localStorage.getItem(GCAL_KEY)==='1'; }catch(e){ return false; } }
+function toggleGcal(){
+  const now = !isGcalConnected();
+  try{ localStorage.setItem(GCAL_KEY, now?'1':'0'); }catch(e){}
+  let tasks = loadTasks();
+  if(now){
+    // seed a couple of believable "synced" events, clearly demo data — only if not already present
+    if(!tasks.some(t=>t.synced)){
+      const d1 = new Date(); d1.setDate(d1.getDate()+3);
+      const d2 = new Date(); d2.setDate(d2.getDate()+9);
+      tasks.push({id:uid(), text:'Parent-teacher conference', type:'appointment', date:todayKey(d1), time:'16:30', done:false, synced:true});
+      tasks.push({id:uid(), text:"Soccer practice pickup", type:'appointment', date:todayKey(d2), time:'17:00', done:false, synced:true});
+    }
+  } else {
+    // disconnecting removes the synced demo events so re-toggling stays clean
+    tasks = tasks.filter(t=>!t.synced);
+  }
+  saveTasks(tasks);
+  renderUpcoming();
+  renderToday();
+}
+function renderUpcoming(){
+  const connected = isGcalConnected();
+  const banner = document.getElementById('gcalBanner');
+  banner.classList.toggle('on', connected);
+  document.getElementById('gcalTitle').textContent = connected ? 'Google Calendar connected' : 'Connect Google Calendar';
+  document.getElementById('gcalSub').textContent = connected ? 'Syncing both ways \u2713' : 'Sync your real calendar both ways';
+
+  document.getElementById('upDow').innerHTML = DOW_SHORT.map(d=>'<span>'+d[0]+'</span>').join('');
+
+  const tasks = loadTasks().filter(t=>t.date);
+  const now = new Date();
+  const viewDate = new Date(now.getFullYear(), now.getMonth()+upcomingMonthOffset, 1);
+  const y = viewDate.getFullYear(), m = viewDate.getMonth();
+  const firstDow = new Date(y,m,1).getDay();
+  const daysInMonth = new Date(y,m+1,0).getDate();
+  const todayStr = todayKey();
+
+  const byDate = {};
+  tasks.forEach(t=>{ (byDate[t.date] = byDate[t.date]||[]).push(t); });
+
+  const cells = [];
+  for(let i=0;i<firstDow;i++) cells.push('<div class="up-cell dim"></div>');
+  for(let day=1; day<=daysInMonth; day++){
+    const d = new Date(y,m,day);
+    const key = todayKey(d);
+    const has = byDate[key] && byDate[key].length>0;
+    const isToday = key===todayStr;
+    cells.push('<div class="up-cell'+(isToday?' today':'')+'">'+day+(has?'<span class="up-pip"></span>':'')+'</div>');
+  }
+  const rows = [];
+  for(let i=0;i<cells.length;i+=7) rows.push('<div class="up-row">'+cells.slice(i,i+7).join('')+'</div>');
+  document.getElementById('upGrid').innerHTML = rows.join('');
+  document.getElementById('upMonthTitle').textContent = MONTH_NAMES[m]+' '+y;
+  document.getElementById('upBack').disabled = upcomingMonthOffset <= 0;
+  document.getElementById('upFwd').disabled = upcomingMonthOffset >= 11;
+
+  const upcoming = tasks.filter(t=>t.date > todayStr).sort((a,b)=>a.date.localeCompare(b.date));
+  const listEl = document.getElementById('upcomingList');
+  if(upcoming.length===0){
+    listEl.innerHTML = '<p class="hint">Nothing dated yet. Braindump something on Today and give it a date.</p>';
+    return;
+  }
+  let html = '', lastDate = '';
+  upcoming.forEach(t=>{
+    if(t.date !== lastDate){
+      lastDate = t.date;
+      const d = new Date(t.date+'T00:00:00');
+      const label = DOW_SHORT[d.getDay()]+', '+MONTH_NAMES[d.getMonth()].slice(0,3)+' '+d.getDate();
+      html += '<div class="up-daylabel">'+label+'</div>';
+    }
+    const timeLabel = t.time ? formatTime(t.time) : '\u2014';
+    html += '<div class="arow" data-taskid="'+t.id+'"><span class="ar-time">'+timeLabel+'</span><span class="ar-check" style="visibility:hidden"></span>'
+      + '<div class="ar-body"><div class="ar-txt">'+t.text+(t.synced?' <span style="color:var(--ink-soft);font-weight:600;font-size:11px;">(synced)</span>':'')+'</div>'
+      + '<div class="ar-meta"><span class="ar-dot '+t.type+'"></span>'+t.type.charAt(0).toUpperCase()+t.type.slice(1)+'</div></div></div>';
+  });
+  listEl.innerHTML = html;
+  enableSwipeDelete(listEl, '.arow');
+}
+
+renderToday();
 
 /* ================= PWA plumbing ================= */
 (function handleDeepLink(){
