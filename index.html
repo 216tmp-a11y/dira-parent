@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 07-20-25 v8, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
+<!-- 07-20-25 v9, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
 <!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
 <!-- Swipe-to-delete rebuilt with real touch events (was pointer-events-only, which tested fine via simulated mouse but never actually exercised the touch code path a real phone uses). Today's unified body text bumped 13.5px -> 16px across COS/caption/inbox/braindump/task-row text; header bumped 16->18 to keep hierarchy above it. -->
 <!-- v7 — swipe direction fixed to right-to-left (standard delete convention), delete animation + desktop mouse fallback updated to match -->
@@ -470,7 +470,7 @@
                 <span class="bd-plus">+</span>
                 <div class="bd-input empty" id="bdInput" contenteditable="true"></div>
               </div>
-              <div class="bd-hint">Jot anything &mdash; it drops in your inbox to sort.</div>
+              <div class="bd-hint">Type a todo and hit 'enter' &mdash; it drops in your inbox to sort.</div>
               <div class="bd-chips">
                 <span class="bd-chip" data-txt="call pediatrician back">call pediatrician back</span>
                 <span class="bd-chip" data-txt="pack swim bag for tomorrow">pack swim bag tomorrow</span>
