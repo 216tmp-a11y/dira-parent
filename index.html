@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- 07-20-25 v5, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
+<!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -95,17 +97,17 @@
   .bd-top{display:flex;align-items:flex-start;gap:10px;}
   .bd-plus{width:26px;height:26px;border-radius:50%;background:var(--lav);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none;font-size:15px;line-height:1;}
   .bd-input{flex:1;font-size:13.5px;font-weight:500;outline:none;min-height:22px;color:var(--ink);line-height:1.4;}
-  .bd-input.empty::before{content:"Braindump anything on your mind\2026";color:var(--ink-soft);}
+  .bd-input.empty::before{content:"Braindump anything on your mind\2026";color:var(--ink-soft);font-weight:500;font-size:13.5px;}
   .bd-hint{font-size:10.5px;color:var(--ink-soft);margin-top:8px;}
   .bd-chips{margin-top:8px;}
-  .bd-chip{display:inline-block;font-size:11px;font-weight:800;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:5px 11px;margin:0 5px 5px 0;color:var(--ink);cursor:pointer;}
+  .bd-chip{display:inline-block;font-size:11px;font-weight:600;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:5px 11px;margin:0 5px 5px 0;color:var(--ink-soft);cursor:pointer;}
 
   .inbox-card{background:var(--cloud);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:0 10px 24px -18px rgba(43,42,61,.4);}
   .inbox-hd{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);}
   .inbox-hd .t2{font-size:12.5px;font-weight:700;}
   .inbox-hd .cnt{font-size:11px;color:var(--ink-soft);font-weight:700;}
   .inbox-sortbtn{margin-left:auto;background:var(--lav);color:#fff;border:none;border-radius:10px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer;}
-  .inbox-row{padding:10px 14px;border-bottom:1px dashed var(--line);font-size:12.5px;display:flex;align-items:center;gap:8px;}
+  .inbox-row{padding:10px 14px;border-bottom:1px dashed var(--line);font-size:13.5px;display:flex;align-items:center;gap:8px;}
   .inbox-row:last-child{border-bottom:none;}
   .inbox-row .ir-dot{width:6px;height:6px;border-radius:50%;background:var(--ink-soft);flex:none;}
   .inbox-row .ir-txt{flex:1;min-width:120px;}
@@ -172,7 +174,12 @@
   .tk-pill.reminder{background:#e2eefa;color:#2a6ca8;}
   .tk-pill.appointment{background:var(--later-wash);color:#3d6b5f;}
   .tk-pill.note{background:var(--lav-wash);color:#5f4bb3;}
-  .today-tasks-head{font-size:12px;font-weight:700;color:var(--ink-soft);padding:10px 0 4px;}
+  .today-tasks-head{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--ink);padding:14px 2px 4px;cursor:pointer;}
+  .today-tasks-head .tth-chev{font-size:14px;color:var(--ink-soft);transition:transform .2s ease;flex:none;}
+  .today-tasks-head.open .tth-chev{transform:rotate(90deg);}
+  .today-tasks-sub{font-size:13.5px;color:var(--ink-soft);padding:0 2px 10px;}
+  .today-tasks-body{display:none;}
+  .today-tasks-body.open{display:block;}
 
   /* ===== Upcoming tab ===== */
   .gcal-banner{display:flex;align-items:center;gap:10px;background:#fdf3dc;border:1px solid #ecd9a8;border-radius:14px;padding:11px 13px;margin-bottom:14px;cursor:pointer;}
@@ -202,9 +209,9 @@
   .prep-switch button{flex:1;border:none;background:none;font-size:12px;font-weight:700;color:var(--ink-soft);padding:8px 4px;border-radius:11px;cursor:pointer;}
   .prep-switch button.on{background:var(--cloud);color:var(--ink);box-shadow:0 4px 12px -6px rgba(43,42,61,.4);}
   .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:8px;}
-  .cos-caption{font-size:11px;color:rgba(255,255,255,.72);margin:-4px 0 10px;line-height:1.4;}
+  .cos-caption{font-size:13.5px;color:rgba(255,255,255,.8);margin:-2px 0 10px;line-height:1.4;}
   .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:#fff;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.35);}
-  .cos-card p{font-size:14.5px;line-height:1.55;color:#fff;margin-bottom:0;}
+  .cos-card p{font-size:13.5px;line-height:1.55;color:#fff;margin-bottom:0;}
   .cos-inline-link{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:2px;cursor:pointer;}
 
   .tally-card{background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:16px 18px;margin-bottom:16px;}
@@ -455,7 +462,6 @@
               </div>
               <div class="bd-hint">Jot anything &mdash; it drops in your inbox to sort.</div>
               <div class="bd-chips">
-                <span class="bd-chip" data-txt="return the library books">return library books</span>
                 <span class="bd-chip" data-txt="call pediatrician back">call pediatrician back</span>
                 <span class="bd-chip" data-txt="pack swim bag for tomorrow">pack swim bag tomorrow</span>
               </div>
@@ -870,7 +876,7 @@ function go(id){
   document.getElementById('tierStatus').style.display = (id==='today'||id==='upcoming') ? 'none' : 'flex';
   if(id==='month') renderMonth();
   if(id==='home') renderHomeWidgets();
-  if(id==='today') renderToday();
+  if(id==='today'){ todayActionsOpen = false; renderToday(); }
   if(id==='upcoming') renderUpcoming();
 }
 function openVisit(id, which){
@@ -1111,6 +1117,7 @@ function renderHomeWidgets(){
 
 /* ================= YOUR MONTH ================= */
 let monthOffset = 0;
+let todayActionsOpen = false;
 let upcomingMonthOffset = 0;
 function renderMonth(){
   const data = purgeOld();
@@ -1331,6 +1338,11 @@ function applyWhenDate(dateStr){
   saveTasks(tasks);
   nextWhen();
 }
+function toggleTodayActions(){
+  todayActionsOpen = !todayActionsOpen;
+  document.getElementById('todayTasksToggle').classList.toggle('open');
+  document.getElementById('todayTasksBody').classList.toggle('open');
+}
 function toggleTaskDone(taskId){
   const tasks = loadTasks();
   const t = tasks.find(x=>x.id===taskId);
@@ -1429,13 +1441,14 @@ function renderToday(){
     }).join('');
   }
 
-  // Today's tasks — boxed, color-coded by type; overdue gets its own flagged section up top
+  // Today's tasks — boxed, color-coded by type; overdue gets its own flagged section up top.
+  // Collapsed by default each time the page renders - toggling down is a small
+  // deliberate "start your day" action, not a remembered preference.
   const taskWrap = document.getElementById('todayTasks');
   const total = overdue.length + dueToday.length + doneToday.length;
   if(total===0){
     taskWrap.innerHTML = '';
   } else {
-    const todayLabel = DOW_SHORT[now.getDay()]+', '+MONTH_NAMES[now.getMonth()].slice(0,3)+' '+now.getDate();
     const row = (t, overdueFlag)=>{
       const timeLabel = t.time ? formatTime(t.time) : '\u2014';
       return '<div class="dayrow src-'+t.type+(t.done?' done':'')+(overdueFlag?' overdue':'')+'" data-taskid="'+t.id+'">'
@@ -1444,11 +1457,15 @@ function renderToday(){
         + '<span class="dr-txt">'+t.text+'</span>'
         + '<span class="dr-pill">'+(overdueFlag?'Catch up':t.type)+'</span></div>';
     };
-    let html = '<div class="today-tasks-head">Today &middot; '+todayLabel+'</div>';
-    if(overdue.length) html += '<div class="overdue-hd">Needs attention &mdash; do first</div>' + overdue.map(t=>row(t,true)).join('');
-    html += dueToday.map(t=>row(t,false)).join('');
-    html += doneToday.map(t=>row(t,false)).join('');
-    taskWrap.innerHTML = html;
+    let rowsHtml = '';
+    if(overdue.length) rowsHtml += '<div class="overdue-hd">Needs attention &mdash; do first</div>' + overdue.map(t=>row(t,true)).join('');
+    rowsHtml += dueToday.map(t=>row(t,false)).join('');
+    rowsHtml += doneToday.map(t=>row(t,false)).join('');
+    taskWrap.innerHTML = ''
+      + '<div class="today-tasks-head'+(todayActionsOpen?' open':'')+'" id="todayTasksToggle" onclick="toggleTodayActions()">'
+        + '<span class="tth-chev">&#9656;</span>Today\'s Actions</div>'
+      + '<div class="today-tasks-sub">&mdash; toggle down to start your day!</div>'
+      + '<div class="today-tasks-body'+(todayActionsOpen?' open':'')+'" id="todayTasksBody">'+rowsHtml+'</div>';
   }
   enableSwipeDelete(taskWrap, '.dayrow');
 
