@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 07-20-25 v6, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
+<!-- 07-20-25 v7, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
 <!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
 <!-- Swipe-to-delete rebuilt with real touch events (was pointer-events-only, which tested fine via simulated mouse but never actually exercised the touch code path a real phone uses). Today's unified body text bumped 13.5px -> 16px across COS/caption/inbox/braindump/task-row text; header bumped 16->18 to keep hierarchy above it. -->
 <html lang="en">
@@ -99,7 +99,7 @@
   .bd-plus{width:26px;height:26px;border-radius:50%;background:var(--lav);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none;font-size:15px;line-height:1;}
   .bd-input{flex:1;font-size:16px;font-weight:500;outline:none;min-height:22px;color:var(--ink);line-height:1.4;}
   .bd-input.empty::before{content:"Braindump anything on your mind\2026";color:var(--ink-soft);font-weight:500;font-size:16px;}
-  .bd-hint{font-size:10.5px;color:var(--ink-soft);margin-top:8px;}
+  .bd-hint{font-size:14px;color:var(--ink-soft);margin-top:8px;}
   .bd-chips{margin-top:8px;}
   .bd-chip{display:inline-block;font-size:11px;font-weight:600;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:5px 11px;margin:0 5px 5px 0;color:var(--ink-soft);cursor:pointer;}
 
@@ -1385,7 +1385,7 @@ function enableSwipeDelete(container, rowSelector){
       const id = el.dataset.taskid;
       el.style.transition = 'opacity .22s ease, transform .22s ease';
       el.style.opacity = '0';
-      el.style.transform = 'translateX(130px)';
+      el.style.transform = 'translateX(-130px)';
       setTimeout(()=>{ deleteTask(id); }, 200);
     };
     const reset = ()=>{ el.style.transform = ''; };
@@ -1409,13 +1409,13 @@ function enableSwipeDelete(container, rowSelector){
       }
       if(decided==='h'){
         if(e.cancelable) e.preventDefault();
-        if(dx>0) el.style.transform = 'translateX('+Math.min(dx,90)+'px)';
+        if(dx<0) el.style.transform = 'translateX('+Math.max(dx,-90)+'px)';
       }
     }, {passive:false});
     el.addEventListener('touchend', ()=>{
       if(!tracking) return;
       tracking = false;
-      if(decided==='h' && dx>60) doDelete(); else reset();
+      if(decided==='h' && dx<-60) doDelete(); else reset();
       decided = null;
     });
     el.addEventListener('touchcancel', ()=>{ tracking=false; decided=null; reset(); });
@@ -1431,13 +1431,13 @@ function enableSwipeDelete(container, rowSelector){
     el.addEventListener('pointermove', e=>{
       if(e.pointerType==='touch' || !dragging) return;
       const d = e.clientX - sx;
-      if(d>8) el.style.transform = 'translateX('+Math.min(d,90)+'px)';
+      if(d<-8) el.style.transform = 'translateX('+Math.max(d,-90)+'px)';
     });
     el.addEventListener('pointerup', e=>{
       if(e.pointerType==='touch' || !dragging) return;
       dragging = false;
       const d = e.clientX - sx;
-      if(d>60) doDelete(); else reset();
+      if(d<-60) doDelete(); else reset();
     });
     el.addEventListener('pointercancel', ()=>{ dragging=false; reset(); });
     el.addEventListener('pointerleave', ()=>{ if(dragging){ dragging=false; reset(); } });
