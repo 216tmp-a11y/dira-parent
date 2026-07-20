@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<!-- 07-20-25 v5, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
+<!-- 07-20-25 v6, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
 <!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
+<!-- Swipe-to-delete rebuilt with real touch events (was pointer-events-only, which tested fine via simulated mouse but never actually exercised the touch code path a real phone uses). Today's unified body text bumped 13.5px -> 16px across COS/caption/inbox/braindump/task-row text; header bumped 16->18 to keep hierarchy above it. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -96,8 +97,8 @@
   .braindump{background:var(--cloud);border:2px solid #1a1a1a;border-radius:18px;padding:14px 14px 12px;margin:14px 0;box-shadow:0 10px 24px -18px rgba(43,42,61,.4);}
   .bd-top{display:flex;align-items:flex-start;gap:10px;}
   .bd-plus{width:26px;height:26px;border-radius:50%;background:var(--lav);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none;font-size:15px;line-height:1;}
-  .bd-input{flex:1;font-size:13.5px;font-weight:500;outline:none;min-height:22px;color:var(--ink);line-height:1.4;}
-  .bd-input.empty::before{content:"Braindump anything on your mind\2026";color:var(--ink-soft);font-weight:500;font-size:13.5px;}
+  .bd-input{flex:1;font-size:16px;font-weight:500;outline:none;min-height:22px;color:var(--ink);line-height:1.4;}
+  .bd-input.empty::before{content:"Braindump anything on your mind\2026";color:var(--ink-soft);font-weight:500;font-size:16px;}
   .bd-hint{font-size:10.5px;color:var(--ink-soft);margin-top:8px;}
   .bd-chips{margin-top:8px;}
   .bd-chip{display:inline-block;font-size:11px;font-weight:600;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:5px 11px;margin:0 5px 5px 0;color:var(--ink-soft);cursor:pointer;}
@@ -107,7 +108,7 @@
   .inbox-hd .t2{font-size:12.5px;font-weight:700;}
   .inbox-hd .cnt{font-size:11px;color:var(--ink-soft);font-weight:700;}
   .inbox-sortbtn{margin-left:auto;background:var(--lav);color:#fff;border:none;border-radius:10px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer;}
-  .inbox-row{padding:10px 14px;border-bottom:1px dashed var(--line);font-size:13.5px;display:flex;align-items:center;gap:8px;}
+  .inbox-row{padding:10px 14px;border-bottom:1px dashed var(--line);font-size:16px;display:flex;align-items:center;gap:8px;}
   .inbox-row:last-child{border-bottom:none;}
   .inbox-row .ir-dot{width:6px;height:6px;border-radius:50%;background:var(--ink-soft);flex:none;}
   .inbox-row .ir-txt{flex:1;min-width:120px;}
@@ -156,7 +157,7 @@
   .dayrow .dr-time{font-family:"SF Mono",Menlo,monospace;font-size:10.5px;font-weight:700;color:var(--ink-soft);width:36px;flex:none;text-align:center;}
   .dayrow .dr-check{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(43,42,61,.25);background:#fff;flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;}
   .dayrow .dr-check.on{background:var(--later-1);border-color:var(--later-1);}
-  .dayrow .dr-txt{flex:1;font-size:13.5px;font-weight:700;color:var(--ink);min-width:0;}
+  .dayrow .dr-txt{flex:1;font-size:16px;font-weight:700;color:var(--ink);min-width:0;}
   .dayrow .dr-pill{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:99px;flex:none;background:rgba(255,255,255,.65);color:var(--ink-soft);}
   .dayrow.overdue .dr-pill{background:#e8a5a5;color:#7a2020;}
   .overdue-hd{font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#c1443f;padding:4px 2px 6px;}
@@ -174,10 +175,10 @@
   .tk-pill.reminder{background:#e2eefa;color:#2a6ca8;}
   .tk-pill.appointment{background:var(--later-wash);color:#3d6b5f;}
   .tk-pill.note{background:var(--lav-wash);color:#5f4bb3;}
-  .today-tasks-head{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--ink);padding:14px 2px 4px;cursor:pointer;}
+  .today-tasks-head{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;color:var(--ink);padding:14px 2px 4px;cursor:pointer;}
   .today-tasks-head .tth-chev{font-size:14px;color:var(--ink-soft);transition:transform .2s ease;flex:none;}
   .today-tasks-head.open .tth-chev{transform:rotate(90deg);}
-  .today-tasks-sub{font-size:13.5px;color:var(--ink-soft);padding:0 2px 10px;}
+  .today-tasks-sub{font-size:16px;font-weight:800;color:#2d6a4f;padding:0 2px 10px;}
   .today-tasks-body{display:none;}
   .today-tasks-body.open{display:block;}
 
@@ -209,9 +210,9 @@
   .prep-switch button{flex:1;border:none;background:none;font-size:12px;font-weight:700;color:var(--ink-soft);padding:8px 4px;border-radius:11px;cursor:pointer;}
   .prep-switch button.on{background:var(--cloud);color:var(--ink);box-shadow:0 4px 12px -6px rgba(43,42,61,.4);}
   .cos-card .cos-k{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:8px;}
-  .cos-caption{font-size:13.5px;color:rgba(255,255,255,.8);margin:-2px 0 10px;line-height:1.4;}
+  .cos-caption{font-size:16px;color:rgba(255,255,255,.8);margin:-2px 0 10px;line-height:1.4;}
   .cos-card .cos-av{width:20px;height:20px;border-radius:50%;background:#fff;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.35);}
-  .cos-card p{font-size:13.5px;line-height:1.55;color:#fff;margin-bottom:0;}
+  .cos-card p{font-size:16px;line-height:1.55;color:#fff;margin-bottom:0;}
   .cos-inline-link{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:2px;cursor:pointer;}
 
   .tally-card{background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:16px 18px;margin-bottom:16px;}
@@ -1380,32 +1381,66 @@ const TYPE_ICON = {errand:'&#128722;', reminder:'&#128222;', appointment:'&#1281
 
 function enableSwipeDelete(container, rowSelector){
   container.querySelectorAll(rowSelector).forEach(el=>{
+    const doDelete = ()=>{
+      const id = el.dataset.taskid;
+      el.style.transition = 'opacity .22s ease, transform .22s ease';
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(130px)';
+      setTimeout(()=>{ deleteTask(id); }, 200);
+    };
+    const reset = ()=>{ el.style.transform = ''; };
+
+    /* Real phones: touch events. Direction is decided within the first ~8px
+       of movement — only once it's clearly horizontal do we preventDefault
+       and claim the gesture, so a normal vertical scroll is never blocked. */
+    let startX=0, startY=0, dx=0, tracking=false, decided=null;
+    el.addEventListener('touchstart', e=>{
+      if(e.target.closest('.dr-check')) return;
+      const t = e.touches[0];
+      startX=t.clientX; startY=t.clientY; dx=0; tracking=true; decided=null;
+    }, {passive:true});
+    el.addEventListener('touchmove', e=>{
+      if(!tracking) return;
+      const t = e.touches[0];
+      dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if(decided===null && (Math.abs(dx)>8 || Math.abs(dy)>8)){
+        decided = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+      }
+      if(decided==='h'){
+        if(e.cancelable) e.preventDefault();
+        if(dx>0) el.style.transform = 'translateX('+Math.min(dx,90)+'px)';
+      }
+    }, {passive:false});
+    el.addEventListener('touchend', ()=>{
+      if(!tracking) return;
+      tracking = false;
+      if(decided==='h' && dx>60) doDelete(); else reset();
+      decided = null;
+    });
+    el.addEventListener('touchcancel', ()=>{ tracking=false; decided=null; reset(); });
+
+    /* Desktop: mouse-driven pointer events, for testing in a regular browser.
+       Real touch interactions are handled above instead, to avoid double-firing. */
     let sx=0, dragging=false;
     el.addEventListener('pointerdown', e=>{
+      if(e.pointerType==='touch') return;
       if(e.target.closest('.dr-check')) return;
       sx=e.clientX; dragging=true; try{el.setPointerCapture(e.pointerId);}catch(err){}
     });
     el.addEventListener('pointermove', e=>{
-      if(!dragging) return;
-      const dx = e.clientX - sx;
-      if(dx > 8) el.style.transform = 'translateX('+Math.min(dx,90)+'px)';
+      if(e.pointerType==='touch' || !dragging) return;
+      const d = e.clientX - sx;
+      if(d>8) el.style.transform = 'translateX('+Math.min(d,90)+'px)';
     });
     el.addEventListener('pointerup', e=>{
-      if(!dragging) return;
+      if(e.pointerType==='touch' || !dragging) return;
       dragging = false;
-      const dx = e.clientX - sx;
-      if(dx > 60){
-        const id = el.dataset.taskid;
-        el.style.transition = 'opacity .22s ease, transform .22s ease';
-        el.style.opacity = '0';
-        el.style.transform = 'translateX(130px)';
-        setTimeout(()=>{ deleteTask(id); }, 200);
-      } else {
-        el.style.transform = '';
-      }
+      const d = e.clientX - sx;
+      if(d>60) doDelete(); else reset();
     });
-    el.addEventListener('pointercancel', ()=>{ dragging=false; el.style.transform=''; });
-    el.addEventListener('pointerleave', ()=>{ if(dragging){ dragging=false; el.style.transform=''; } });
+    el.addEventListener('pointercancel', ()=>{ dragging=false; reset(); });
+    el.addEventListener('pointerleave', ()=>{ if(dragging){ dragging=false; reset(); } });
   });
 }
 
