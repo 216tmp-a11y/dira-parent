@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<!-- 07-20-25 v11, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
+<!-- 07-20-25 v5, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
 <!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
 <!-- Swipe-to-delete rebuilt with real touch events (was pointer-events-only, which tested fine via simulated mouse but never actually exercised the touch code path a real phone uses). Today's unified body text bumped 13.5px -> 16px across COS/caption/inbox/braindump/task-row text; header bumped 16->18 to keep hierarchy above it. -->
 <!-- v7 — swipe direction fixed to right-to-left (standard delete convention), delete animation + desktop mouse fallback updated to match -->
 <!-- v8 — weight/contrast pass on Today (braindump box taller, placeholder/hint/chips/inbox label/inbox-empty/cos-caption all bumped in size and/or weight, several had been missed in the earlier size-only pass). Tap-to-edit built: tap any task row to edit text + time everywhere, plus date on Upcoming only (not Today, to protect the overdue-carryover system) — tap detection shares the same gesture handler as swipe-to-delete so they don't conflict. -->
 <!-- v9 — COS main message on Today bumped to 18px/700 weight, now clearly bigger and heavier than the 16px braindump/inbox baseline; caption subtitle stays quieter beneath it -->
+<!-- v11 — background lightened from cream to a lighter white-cream (--paper); tier defaulted to paid so Check In + Prepare show fully unlocked with no blur/upsell (demo Free/Plus switcher stays hidden); free/paid status banner hidden on every tab, not just Check In/Prepare; new first-open Welcome/explainer overlay added (shows once via localStorage flag, dismiss button sets it) -->
+<!-- v12 — welcome overlay headline bumped to 700 weight/24px, body copy to 600 weight/15.5px in full ink color (was reading too light/small); seeded demo tasks disabled so real users start with a genuinely empty inbox/Today (function left in place, not deleted, for a future demo toggle); braindump hint copy updated to "Type anything & hit enter — it drops in your inbox to sort." -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -421,8 +423,8 @@
   .welcome-overlay.show{display:flex;animation:fade .3s ease;}
   .welcome-word{font-family:var(--serif);font-weight:600;font-size:15px;letter-spacing:.2px;color:var(--ink-soft);margin-bottom:28px;}
   .welcome-word span{color:var(--now-1);}
-  .welcome-flash{font-family:var(--serif);font-weight:600;font-size:21px;line-height:1.38;color:var(--ink);margin-bottom:16px;}
-  .welcome-body{font-size:14px;line-height:1.55;color:var(--ink-soft);margin-bottom:26px;max-width:320px;}
+  .welcome-flash{font-family:var(--serif);font-weight:700;font-size:24px;line-height:1.36;color:var(--ink);margin-bottom:16px;}
+  .welcome-body{font-size:15.5px;font-weight:600;line-height:1.55;color:var(--ink);margin-bottom:26px;max-width:320px;}
   .welcome-pills{display:flex;gap:10px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;}
   .welcome-pill{display:flex;align-items:center;gap:8px;background:var(--cloud);border:1px solid var(--line);border-radius:14px;padding:9px 14px 9px 9px;font-size:12.5px;font-weight:700;color:var(--ink);box-shadow:0 8px 20px -16px rgba(43,42,61,.5);}
   .welcome-pill .wp-ic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;}
@@ -486,7 +488,7 @@
                 <span class="bd-plus">+</span>
                 <div class="bd-input empty" id="bdInput" contenteditable="true"></div>
               </div>
-              <div class="bd-hint">Jot anything &mdash; it drops in your inbox to sort.</div>
+              <div class="bd-hint">Type anything &amp; hit enter &mdash; it drops in your inbox to sort.</div>
               <div class="bd-chips">
                 <span class="bd-chip" data-txt="call pediatrician back">call pediatrician back</span>
                 <span class="bd-chip" data-txt="pack swim bag for tomorrow">pack swim bag tomorrow</span>
@@ -1295,8 +1297,13 @@ function classifyDate(text){
 }
 
 /* Seed a few believable tasks on first-ever load, same spirit as the check-in
-   seed: only if nothing exists yet, never overwrites real data. */
+   seed: only if nothing exists yet, never overwrites real data.
+   DISABLED for real users as of v11 — a populated inbox reads as confusing,
+   not as a demo, once actual people are using the app. Left in place (not
+   deleted) in case a populated preview is useful again later; just delete
+   the early return below to re-enable. */
 function seedTasksIfEmpty(){
+  return;
   let existing;
   try{ existing = localStorage.getItem(TASK_KEY); }catch(e){ return; }
   if(existing) return;
