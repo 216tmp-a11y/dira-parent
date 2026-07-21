@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 07-20-25 v5, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
+<!-- 07-20-25 v11, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
 <!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
 <!-- Swipe-to-delete rebuilt with real touch events (was pointer-events-only, which tested fine via simulated mouse but never actually exercised the touch code path a real phone uses). Today's unified body text bumped 13.5px -> 16px across COS/caption/inbox/braindump/task-row text; header bumped 16->18 to keep hierarchy above it. -->
 <!-- v7 — swipe direction fixed to right-to-left (standard delete convention), delete animation + desktop mouse fallback updated to match -->
@@ -417,6 +417,20 @@
   .ios-hint.show{display:block;}
   .ios-hint b{color:#fff;}
 
+  .welcome-overlay{position:absolute;inset:0;z-index:70;background:var(--paper);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px 30px;text-align:center;border-radius:40px;overflow:hidden;}
+  .welcome-overlay.show{display:flex;animation:fade .3s ease;}
+  .welcome-word{font-family:var(--serif);font-weight:600;font-size:15px;letter-spacing:.2px;color:var(--ink-soft);margin-bottom:28px;}
+  .welcome-word span{color:var(--now-1);}
+  .welcome-flash{font-family:var(--serif);font-weight:600;font-size:21px;line-height:1.38;color:var(--ink);margin-bottom:16px;}
+  .welcome-body{font-size:14px;line-height:1.55;color:var(--ink-soft);margin-bottom:26px;max-width:320px;}
+  .welcome-pills{display:flex;gap:10px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;}
+  .welcome-pill{display:flex;align-items:center;gap:8px;background:var(--cloud);border:1px solid var(--line);border-radius:14px;padding:9px 14px 9px 9px;font-size:12.5px;font-weight:700;color:var(--ink);box-shadow:0 8px 20px -16px rgba(43,42,61,.5);}
+  .welcome-pill .wp-ic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;}
+  .welcome-pill.logistics .wp-ic{background:var(--later-wash);}
+  .welcome-pill.moments .wp-ic{background:var(--now-wash);}
+  .welcome-cta{border:none;cursor:pointer;background:linear-gradient(135deg,var(--now-1),var(--now-2));color:#fff;font-size:15px;font-weight:800;padding:16px 0;border-radius:16px;width:100%;max-width:280px;box-shadow:0 14px 28px -14px rgba(255,138,107,.65);transition:transform .15s ease;}
+  .welcome-cta:active{transform:scale(.97);}
+
   @media (display-mode: standalone), (display-mode: minimal-ui), (max-width: 520px){
     body{padding:0;align-items:stretch;justify-content:stretch;min-height:100dvh;}
     .stage{max-width:none;gap:0;width:100%;}
@@ -676,6 +690,17 @@
             <button class="cta" onclick="setTier('paid');closeUpsell()">Start Dira Plus<small>Preview the paid experience in this demo</small></button>
             <button class="dismiss" onclick="closeUpsell()">Not now</button>
           </div>
+        </div>
+
+        <div class="welcome-overlay" id="welcomeOverlay">
+          <div class="welcome-word">Dira <span>Parent</span></div>
+          <h1 class="welcome-flash">Welcome to Dira Parent: your assistant for everything parenting &mdash; the errands you can't forget and the moments you don't know how to handle.</h1>
+          <p class="welcome-body">Dira Parent holds the two things that make up a parent's daily mental load: the logistics (the diapers, the callback, the appointment) and the hard moments (the meltdown, the bedtime battle, the sibling fight) &mdash; with a quick way to handle whichever one shows up, and an assistant for each that gets sharper the more you use it.</p>
+          <div class="welcome-pills">
+            <div class="welcome-pill logistics"><span class="wp-ic">&#128203;</span>Logistics</div>
+            <div class="welcome-pill moments"><span class="wp-ic">&#127755;</span>Hard moments</div>
+          </div>
+          <button class="welcome-cta" onclick="dismissWelcome()">Get started</button>
         </div>
 
       </div>
@@ -1684,6 +1709,18 @@ function renderUpcoming(){
 }
 
 renderToday();
+
+/* ================= WELCOME (first open only) ================= */
+const WELCOME_KEY = 'dira_welcome_seen';
+function dismissWelcome(){
+  document.getElementById('welcomeOverlay').classList.remove('show');
+  try{ localStorage.setItem(WELCOME_KEY, '1'); }catch(e){}
+}
+(function showWelcomeIfFirstOpen(){
+  let seen;
+  try{ seen = localStorage.getItem(WELCOME_KEY); }catch(e){ seen = '1'; } // if storage is blocked, don't block the app on it
+  if(!seen) document.getElementById('welcomeOverlay').classList.add('show');
+})();
 
 /* ================= PWA plumbing ================= */
 (function handleDeepLink(){
