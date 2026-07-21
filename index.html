@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<!-- 07-20-25 v9, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
+<!-- 07-20-25 v5, braindump section changes: only 2 examples, un-bolding examples, adding outline to section, fixed PWA manifest (start_url + shortcuts pointed at the wrong filename), placeholder text deep grey/bold/larger (no italic) -->
 <!-- Today's Actions toggle built: collapsed by default, only the action rows toggle (greeting/COS/braindump/inbox always visible), state persists through checkbox/delete actions but resets to collapsed on fresh tab navigation. Font sizes unified to 13.5px across COS text, cos-caption subtitles, inbox rows, and braindump placeholder (was 11-16px scattered) — placeholder reverted to plain grey, not bold. -->
 <!-- Swipe-to-delete rebuilt with real touch events (was pointer-events-only, which tested fine via simulated mouse but never actually exercised the touch code path a real phone uses). Today's unified body text bumped 13.5px -> 16px across COS/caption/inbox/braindump/task-row text; header bumped 16->18 to keep hierarchy above it. -->
 <!-- v7 — swipe direction fixed to right-to-left (standard delete convention), delete animation + desktop mouse fallback updated to match -->
 <!-- v8 — weight/contrast pass on Today (braindump box taller, placeholder/hint/chips/inbox label/inbox-empty/cos-caption all bumped in size and/or weight, several had been missed in the earlier size-only pass). Tap-to-edit built: tap any task row to edit text + time everywhere, plus date on Upcoming only (not Today, to protect the overdue-carryover system) — tap detection shares the same gesture handler as swipe-to-delete so they don't conflict. -->
+<!-- v9 — COS main message on Today bumped to 18px/700 weight, now clearly bigger and heavier than the 16px braindump/inbox baseline; caption subtitle stays quieter beneath it -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -24,7 +25,7 @@
 <title>Dira Parent, A moments first companion</title>
 <style>
   :root{
-    --ink:#2b2a3d; --ink-soft:#5f5c74; --paper:#fbf6ee; --cloud:#ffffff;
+    --ink:#2b2a3d; --ink-soft:#5f5c74; --paper:#fdfbf4; --cloud:#ffffff;
     --now-1:#ff8a6b; --now-2:#ffb08a; --now-wash:#fff0e9;
     --later-1:#5b8f83; --later-2:#8fbcae; --later-wash:#e9f2ee;
     --lav:#8f7fd6; --lav-wash:#f0ecfb; --gold:#f2c14e;
@@ -433,7 +434,7 @@
   @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
 </style>
 </head>
-<body class="tier-free">
+<body class="tier-paid">
   <div class="stage">
     <div class="wordmark">
       <h1>Dira <span>Parent</span></h1>
@@ -471,7 +472,7 @@
                 <span class="bd-plus">+</span>
                 <div class="bd-input empty" id="bdInput" contenteditable="true"></div>
               </div>
-              <div class="bd-hint">Type anyting and hit enter &mdash; it drops in your inbox to sort.</div>
+              <div class="bd-hint">Jot anything &mdash; it drops in your inbox to sort.</div>
               <div class="bd-chips">
                 <span class="bd-chip" data-txt="call pediatrician back">call pediatrician back</span>
                 <span class="bd-chip" data-txt="pack swim bag for tomorrow">pack swim bag tomorrow</span>
@@ -900,7 +901,7 @@ function go(id){
   document.getElementById('viewport').scrollTop = 0;
   const tab = tabFor[id] || '';
   document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
-  document.getElementById('tierStatus').style.display = (id==='today'||id==='upcoming') ? 'none' : 'flex';
+  document.getElementById('tierStatus').style.display = 'none';
   if(id==='month') renderMonth();
   if(id==='home') renderHomeWidgets();
   if(id==='today'){ todayActionsOpen = false; renderToday(); }
